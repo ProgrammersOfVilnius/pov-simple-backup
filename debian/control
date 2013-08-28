@@ -1,0 +1,18 @@
+Source: pov-simple-backup
+Section: admin
+Priority: extra
+Maintainer: Marius Gedminas <marius@pov.lt>
+Build-Depends: debhelper (>= 8.0.0), python-docutils
+Standards-Version: 3.9.4
+Homepage: https://github.com/ProgrammersOfVilnius/pov-simple-backup
+
+Package: pov-simple-backup
+Architecture: all
+Depends: ${misc:Depends}
+Description: simple nightly backup script
+ * This is an unofficial package.
+ .
+ This package contains a cron script that can be configured to back up
+ a number of directories and other things, and optionally scp the backups
+ to an off-site server.
+

@@ -1,0 +1,9 @@
+pov-simple-backup for Debian
+----------------------------
+
+To start, copy /usr/share/doc/pov-simple-backup/backup.example to
+/etc/pov/backup.  Edit to suit.  Run 'sudo pov-simple-backup -v' to test.
+
+The cron script is enabled automatically.
+
+ -- Marius Gedminas <marius@pov.lt>  Wed, 28 Aug 2013 18:10:58 +0300
