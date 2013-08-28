@@ -34,7 +34,7 @@ backupdir() {
 }
 
 slugify() {
-    echo $1|sed -e 's,^/\+,,' -e 's,/\+,-,g' -e 's,^$,root,'
+    echo $1|sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
 }
 
 check_overwrite() {

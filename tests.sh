@@ -40,6 +40,7 @@ assertEqual() {
 }
 
 assertEqual slugify /etc = etc
+assertEqual slugify /etc/ = etc
 assertEqual slugify /var/lib/dpkg/info = var-lib-dpkg-info
 assertEqual slugify "" = root
 
