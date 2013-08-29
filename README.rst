@@ -97,8 +97,36 @@ clean_up_old_backups <number> [<directory> [<suffix>]]
   to keep just two weeks' backups
 
 
-copy_backup_to [<user>@]<server>:<path> [<scp options>]
+copy_backup_to [<user>@]<server>:<path> [<ssh options>]
   Copy today's backups to a remote server over SSH
+
+  Destination directory must exist on the remote host.
+
+  Alias for ``rsync_backup_to``.
+
+
+  Example::
+
+      copy_backup_to backups@example.com:/backup/myhostname/ -i key.rsa
+
+  See also: rsync_backup_to, scp_backup_to
+
+
+rsync_backup_to [<user>@]<server>:<path> [<ssh options>]
+  Copy today's backups to a remote server over SSH, using rsync
+
+  Destination directory must exist on the remote host.
+
+
+  Example::
+
+      rsync_backup_to backups@example.com:/backup/myhostname/ -i key.rsa
+
+  See also: scp_backup_to, copy_backup_to
+
+
+scp_backup_to [<user>@]<server>:<path> [<scp options>]
+  Copy today's backups to a remote server over SSH, using scp
 
   Destination directory must exist on the remote host.
 
@@ -106,4 +134,11 @@ copy_backup_to [<user>@]<server>:<path> [<scp options>]
   Example::
 
       copy_backup_to backups@example.com:/backup/myhostname/ -i key.rsa
+
+  Bugs:
+
+  - if the remote directory already exists, creates a second copy, as a
+    subdirectory (e.g. /backup/myhostname/2013-08-29/2013-08-29)
+
+  See also: rsync_backup_to, copy_backup_to
 

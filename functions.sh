@@ -154,15 +154,56 @@ clean_up_old_backups() {
     fi
 }
 
-# copy_backup_to [<user>@]<server>:<path> [<scp options>]
+# copy_backup_to [<user>@]<server>:<path> [<ssh options>]
 #   Copy today's backups to a remote server over SSH
+#
+#   Destination directory must exist on the remote host.
+#
+#   Alias for ``rsync_backup_to``.
+#
+#   Example::
+#
+#       copy_backup_to backups@example.com:/backup/myhostname/ -i key.rsa
+#
+#   See also: rsync_backup_to, scp_backup_to
+copy_backup_to() {
+    rsync_backup_to "$@"
+}
+
+# rsync_backup_to [<user>@]<server>:<path> [<ssh options>]
+#   Copy today's backups to a remote server over SSH, using rsync
+#
+#   Destination directory must exist on the remote host.
+#
+#   Example::
+#
+#       rsync_backup_to backups@example.com:/backup/myhostname/ -i key.rsa
+#
+#   See also: scp_backup_to, copy_backup_to
+rsync_backup_to() {
+    where=$1
+    info "Copying backup to $where"
+    shift
+    [ $dry_run -ne 0 ] && return
+    rsync -az -e "ssh -q -o BatchMode=yes $@" "$(backupdir)" "${where%/}/"
+}
+
+# scp_backup_to [<user>@]<server>:<path> [<scp options>]
+#   Copy today's backups to a remote server over SSH, using scp
 #
 #   Destination directory must exist on the remote host.
 #
 #   Example::
 #
 #       copy_backup_to backups@example.com:/backup/myhostname/ -i key.rsa
-copy_backup_to() {
+#
+#   Bugs:
+#
+#   - if the remote directory already exists, creates a second copy, as a
+#     subdirectory (e.g. /backup/myhostname/2013-08-29/2013-08-29)
+#
+#   See also: rsync_backup_to, copy_backup_to
+scp_backup_to() {
     where=$1
     info "Copying backup to $where"
     shift
