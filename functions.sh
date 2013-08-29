@@ -75,10 +75,31 @@ check_overwrite() {
 #    the trailing slash!  Otherwise it will be ignored.
 back_up() {
     pathname=$1
-    outfile=$(backupdir)/$(slugify "$pathname").tar.gz
+    name=$(slugify "$pathname")
+    back_up_to "$name" "$@"
+}
+
+# back_up_to <name> <pathname> [<tar options>]
+#   Back up a directory or a file.
+#
+#   Creates <name>.tar.gz.
+#
+#   Examples::
+#
+#       back_up_to backup-skeleton /backups/host1 backups/host2 --no-recursive
+#
+#    Note: when using tar's ``--exclude``, be sure to omit both the leading and
+#    the trailing slash!  Otherwise it will be ignored.
+#
+#    Note: you can back up multiple files/directories, but you'll have
+#    to omit leading slashes to avoid warnings from tar.
+back_up_to() {
+    name=$1
+    pathname=$2
+    outfile=$(backupdir)/$name.tar.gz
     info "Backing up $pathname"
     check_overwrite "$outfile" || return
-    shift
+    shift 2
     [ $dry_run -ne 0 ] && return
     tar czf "$outfile" "${pathname#/}" "$@"
 }

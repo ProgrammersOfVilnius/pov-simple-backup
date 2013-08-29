@@ -93,6 +93,12 @@ back_up() {
     estimate "$outfile"
 }
 
+back_up_to() {
+    name=$1
+    outfile=$(backupdir)/$name.tar.gz
+    estimate "$outfile"
+}
+
 back_up_dpkg_selections() {
     outfile=$(backupdir)/dpkg--get-selections.gz
     estimate "$outfile"
