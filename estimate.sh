@@ -48,12 +48,12 @@ size_of_last_backup() {
 
 pretty_size() {
     size=$1
-    if [ $size -lt 1024 ]; then
+    if [ $size -lt 10240 ]; then
         echo "${size}K"
         return
     fi
     size=$((size / 1024))
-    if [ $size -lt 1024 ]; then
+    if [ $size -lt 10240 ]; then
         echo "${size}M"
         return
     fi

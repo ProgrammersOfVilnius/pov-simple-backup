@@ -48,7 +48,9 @@ assertEqual slugify "" = root
 
 assertEqual pretty_size 0 = 0K
 assertEqual pretty_size 1 = 1K
-assertEqual pretty_size 1024 = 1M
-assertEqual pretty_size 1048576 = 1G
+assertEqual pretty_size 1024 = 1024K
+assertEqual pretty_size 10240 = 10M
+assertEqual pretty_size 1048576 = 1024M
+assertEqual pretty_size 10485760 = 10G
 
 echo "all $n_tests tests passed"

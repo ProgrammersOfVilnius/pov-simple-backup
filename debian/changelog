@@ -2,6 +2,8 @@ pov-simple-backup (0.3) UNRELEASED; urgency=low
 
   * Make pov-simple-backup -S output something even if you don't use
     clean_up_old_backups in the config file.
+  * Don't round sizes to megabytes below 10M, to gigabytes below 10G.
+    Increases precision (there's quite a difference between 1G and 1.9G).
 
  -- Marius Gedminas <marius@gedmin.as>  Thu, 29 Aug 2013 12:13:10 +0300
 
