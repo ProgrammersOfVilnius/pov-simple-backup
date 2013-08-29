@@ -75,4 +75,8 @@ umask 077
 
 . "$configfile"
 
+if [ $estimate_size -ne 0 ]; then
+    estimate_summary
+fi
+
 exit 0
