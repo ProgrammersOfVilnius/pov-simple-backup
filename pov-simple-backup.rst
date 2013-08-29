@@ -123,8 +123,6 @@ clean_up_old_backups <number> [<directory> [<suffix>]]
 copy_backup_to [<user>@]<server>:<path> [<ssh options>]
   Copy today's backups to a remote server over SSH
 
-  Destination directory must exist on the remote host.
-
   Alias for ``rsync_backup_to``.
 
 
@@ -138,7 +136,11 @@ copy_backup_to [<user>@]<server>:<path> [<ssh options>]
 rsync_to <pathname> [<user>@]<server>:<path> [<ssh options>]
   Mirror a file or directory to a remote server over SSH, using rsync
 
-  Destination directory must exist on the remote host.
+  It means a lot to rsync whether or not you have a trailing slash at the end
+  of <pathname>, when it's a directory.  No trailing slash: it will create a
+  new directory with the same basename on the server side, under <path>.
+  Trailing slash: it will make the contents of <path> on the server the same
+  as contents of <pathname> here.
 
 
   Example::
@@ -149,8 +151,6 @@ rsync_to <pathname> [<user>@]<server>:<path> [<ssh options>]
 
 rsync_backup_to [<user>@]<server>:<path> [<ssh options>]
   Copy today's backups to a remote server over SSH, using rsync
-
-  Destination directory must exist on the remote host.
 
 
   Example::
