@@ -1,11 +1,11 @@
-pov-simple-backup (0.2) UNRELEASED; urgency=low
+pov-simple-backup (0.2) precise; urgency=low
 
   * New option: -s (skip existing backup files).
   * New option: -S (estimate backup size).
   * New commands: back_up_mysql, rsync_to, rsync_backup_to, scp_backup_to.
   * copy_backup_to uses rsync instead of scp.
 
- -- Marius Gedminas <marius@gedmin.as>  Thu, 29 Aug 2013 10:51:23 +0300
+ -- Marius Gedminas <marius@gedmin.as>  Thu, 29 Aug 2013 12:11:00 +0300
 
 pov-simple-backup (0.1) precise; urgency=low
 
