@@ -112,6 +112,18 @@ copy_backup_to [<user>@]<server>:<path> [<ssh options>]
   See also: rsync_backup_to, scp_backup_to
 
 
+rsync_to <pathname> [<user>@]<server>:<path> [<ssh options>]
+  Mirror a file or directory to a remote server over SSH, using rsync
+
+  Destination directory must exist on the remote host.
+
+
+  Example::
+
+      rsync_to /var/www/uploads backups@example.com:/backup/myhostname/uploads -i key.rsa
+
+
+
 rsync_backup_to [<user>@]<server>:<path> [<ssh options>]
   Copy today's backups to a remote server over SSH, using rsync
 
