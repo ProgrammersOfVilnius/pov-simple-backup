@@ -95,6 +95,17 @@ back_up_postgresql
   - a text dump file is inefficient
 
 
+back_up_mysql
+  Back up all MySQL databases
+
+  Creates mysql-dump.sql.gz
+
+  Bugs:
+
+  - a single dump file for all databases is unwieldy
+  - a text dump file is inefficient
+
+
 clean_up_old_backups <number> [<directory> [<suffix>]]
   Remove old backups, keep last <number>
 

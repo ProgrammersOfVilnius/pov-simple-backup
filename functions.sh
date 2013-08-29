@@ -105,6 +105,23 @@ back_up_postgresql() {
     sudo -u postgres pg_dumpall | gzip > "$outfile"
 }
 
+# back_up_mysql
+#   Back up all MySQL databases
+#
+#   Creates mysql-dump.sql.gz
+#
+#   Bugs:
+#
+#   - a single dump file for all databases is unwieldy
+#   - a text dump file is inefficient
+back_up_mysql() {
+    outfile=$(backupdir)/mysql-dump.sql.gz
+    info "Backing up MySQL"
+    check_overwrite "$outfile"
+    [ $dry_run -ne 0 ] && return
+    mysqldump --defaults-file=/etc/mysql/debian.cnf --all-databases --events | gzip > "$outfile"
+}
+
 # clean_up_old_backups <number> [<directory> [<suffix>]]
 #   Remove old backups, keep last <number>
 #
