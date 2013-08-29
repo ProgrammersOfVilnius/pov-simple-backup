@@ -67,9 +67,12 @@ check_overwrite() {
 #   Examples::
 #
 #       back_up /var/cache/debconf/config.dat
-#       back_up /opt/myapp --exclude 'opt/myapp/var/zdaemonsock'
+#       back_up /opt/myapp --exclude opt/myapp/var/zdaemonsock
 #
 #    would create var-cache-debconf-config.dat.tar.gz and opt-myapp.tar.gz
+#
+#    Note: when using tar's ``--exclude``, be sure to omit both the leading and
+#    the trailing slash!  Otherwise it will be ignored.
 back_up() {
     pathname=$1
     outfile=$(backupdir)/$(slugify "$pathname").tar.gz
