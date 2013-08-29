@@ -17,7 +17,9 @@ SYNOPSIS
 
 **pov-simple-backup** [**-v**] [**-n**] [**-o** | **-s**] [**-f** *configfile*]
 
-**pov-simple-backup** [**-h**]
+**pov-simple-backup** **-S** [**-v**] [**-f** *configfile*]
+
+**pov-simple-backup** **-h**
 
 
 DESCRIPTION
@@ -38,6 +40,7 @@ OPTIONS
              back them up.
 -o           Overwrite existing backup files instead of aborting.
 -s           Skip existing backup files instead of aborting.
+-S           Instead of taking a backup, estimate the size of backups
 -f FILENAME  Use the specified config file instead of ``/etc/pov/backup``.
 
 

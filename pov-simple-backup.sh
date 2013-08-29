@@ -5,17 +5,19 @@ export PATH
 
 usage="\
 Usage: pov-simple-backup [-v] [-n] [-o|-s] [-f configfile]
+       pov-simple-backup -S [-v] [-f configfile]
        pov-simple-backup -h"
 
 verbose=0
 overwrite=0
 skip=0
 dry_run=0
+estimate_size=0
 configfile=/etc/pov/backup
 
 libdir=.
 
-while getopts hvf:osn OPT; do
+while getopts hvf:osnS OPT; do
     case "$OPT" in
         v)
             verbose=1
@@ -32,6 +34,9 @@ while getopts hvf:osn OPT; do
             ;;
         s)
             skip=1
+            ;;
+        S)
+            estimate_size=1
             ;;
         n)
             dry_run=1
@@ -55,7 +60,11 @@ if ! [ -f "$configfile" ]; then
     exit 1
 fi
 
-. "$libdir/functions.sh"
+if [ $estimate_size -ne 0 ]; then
+    . "$libdir/estimate.sh"
+else
+    . "$libdir/functions.sh"
+fi
 
 cd / || exit 1
 

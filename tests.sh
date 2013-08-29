@@ -1,7 +1,5 @@
 #!/bin/sh
 
-. $(dirname $0)/functions.sh
-
 n_tests=0
 
 warn() {
@@ -39,9 +37,18 @@ assertEqual() {
     n_tests=$(($n_tests + 1))
 }
 
+. $(dirname $0)/functions.sh
+
 assertEqual slugify /etc = etc
 assertEqual slugify /etc/ = etc
 assertEqual slugify /var/lib/dpkg/info = var-lib-dpkg-info
 assertEqual slugify "" = root
+
+. $(dirname $0)/estimate.sh
+
+assertEqual pretty_size 0 = 0K
+assertEqual pretty_size 1 = 1K
+assertEqual pretty_size 1024 = 1M
+assertEqual pretty_size 1048576 = 1G
 
 echo "all $n_tests tests passed"
