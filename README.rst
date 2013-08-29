@@ -32,6 +32,7 @@ following command-line options are available:
 -n              only print things that are being backed up, don't
                 actually back them up
 -o              overwrite existing backup files
+-s              skip existing backup files
 -f CONFIG-FILE  use *CONFIG-FILE* instead of /etc/pov/backup
 
 

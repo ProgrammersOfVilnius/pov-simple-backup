@@ -9,6 +9,7 @@
 test -n "$verbose" || verbose=0
 test -n "$dry_run" || dry_run=0
 test -n "$overwrite" || overwrite=0
+test -n "$skip" || skip=0
 
 exec 3>&1
 
@@ -42,6 +43,9 @@ check_overwrite() {
     if [ -e "$filename" ]; then
         if [ $overwrite -ne 0 ]; then
             info "  overwriting $filename"
+        elif [ $skip -ne 0 ]; then
+            info "  skipping $filename"
+            return 1
         else
             error "Refusing to overwrite $filename"
             exit 1
@@ -70,7 +74,7 @@ back_up() {
     pathname=$1
     outfile=$(backupdir)/$(slugify "$pathname").tar.gz
     info "Backing up $pathname"
-    check_overwrite "$outfile"
+    check_overwrite "$outfile" || return
     shift
     [ $dry_run -ne 0 ] && return
     tar czf "$outfile" "${pathname#/}" "$@"
@@ -83,7 +87,7 @@ back_up() {
 back_up_dpkg_selections() {
     outfile=$(backupdir)/dpkg--get-selections.gz
     info "Backing up dpkg selections"
-    check_overwrite "$outfile"
+    check_overwrite "$outfile" || return
     [ $dry_run -ne 0 ] && return
     dpkg --get-selections | gzip > "$outfile"
 }
@@ -100,7 +104,7 @@ back_up_dpkg_selections() {
 back_up_postgresql() {
     outfile=$(backupdir)/postgresql-dump.sql.gz
     info "Backing up PostgreSQL"
-    check_overwrite "$outfile"
+    check_overwrite "$outfile" || return
     [ $dry_run -ne 0 ] && return
     sudo -u postgres pg_dumpall | gzip > "$outfile"
 }
@@ -117,7 +121,7 @@ back_up_postgresql() {
 back_up_mysql() {
     outfile=$(backupdir)/mysql-dump.sql.gz
     info "Backing up MySQL"
-    check_overwrite "$outfile"
+    check_overwrite "$outfile" || return
     [ $dry_run -ne 0 ] && return
     mysqldump --defaults-file=/etc/mysql/debian.cnf --all-databases --events | gzip > "$outfile"
 }

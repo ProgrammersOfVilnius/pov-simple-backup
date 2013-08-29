@@ -1,6 +1,7 @@
 pov-simple-backup (0.2) UNRELEASED; urgency=low
 
   * Add back_up_mysql.
+  * New option: -s (skip existing backup files).
 
  -- Marius Gedminas <marius@gedmin.as>  Thu, 29 Aug 2013 10:51:23 +0300
 

@@ -4,17 +4,18 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export PATH
 
 usage="\
-Usage: pov-simple-backup [-v] [-n] [-o] [-f configfile]
+Usage: pov-simple-backup [-v] [-n] [-o|-s] [-f configfile]
        pov-simple-backup -h"
 
 verbose=0
 overwrite=0
+skip=0
 dry_run=0
 configfile=/etc/pov/backup
 
 libdir=.
 
-while getopts hvf:on OPT; do
+while getopts hvf:osn OPT; do
     case "$OPT" in
         v)
             verbose=1
@@ -28,6 +29,9 @@ while getopts hvf:on OPT; do
             ;;
         o)
             overwrite=1
+            ;;
+        s)
+            skip=1
             ;;
         n)
             dry_run=1

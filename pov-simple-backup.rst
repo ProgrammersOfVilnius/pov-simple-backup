@@ -15,7 +15,7 @@ create non-incremental nightly backups
 SYNOPSIS
 ========
 
-**pov-simple-backup** [**-v**] [**-n**] [**-o**] [**-f** *configfile*]
+**pov-simple-backup** [**-v**] [**-n**] [**-o** | **-s**] [**-f** *configfile*]
 
 **pov-simple-backup** [**-h**]
 
@@ -37,6 +37,7 @@ OPTIONS
 -n           Only print things that are being backed up, don't actually
              back them up.
 -o           Overwrite existing backup files instead of aborting.
+-s           Skip existing backup files instead of aborting.
 -f FILENAME  Use the specified config file instead of ``/etc/pov/backup``.
 
 
