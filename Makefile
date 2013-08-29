@@ -49,6 +49,8 @@ source-package: clean-build-tree
 upload-to-ppa: source-package
 	dput ppa:pov/ppa pkgbuild/$(source)_$(version)_source.changes
 	git tag $(version)
+	git push
+	git push --tags
 
 .PHONY: binary-package
 binary-package: clean-build-tree
