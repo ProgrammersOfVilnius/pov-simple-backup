@@ -24,6 +24,7 @@ check-docs:
 .PHONY: update-docs
 update-docs:
 	./extract-documentation.py -u README.rst -u pov-simple-backup.rst
+	$(MAKE)
 
 .PHONY: install
 install: pov-simple-backup
