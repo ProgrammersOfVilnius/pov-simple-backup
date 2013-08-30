@@ -117,7 +117,7 @@ back_up_uncompressed() {
     estimate "$outfile"
 }
 
-back_up_to_uncompressed() {
+back_up_uncompressed_to() {
     name=$1
     outfile=$(backupdir)/$name.tar
     estimate "$outfile"

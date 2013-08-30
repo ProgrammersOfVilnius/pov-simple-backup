@@ -1,3 +1,9 @@
+pov-simple-backup (0.7) UNRELEASED; urgency=low
+
+  * Make pov-simple-backup -S handle back_up_uncompressed_to correctly.
+
+ -- Marius Gedminas <marius@gedmin.as>  Fri, 30 Aug 2013 18:15:59 +0300
+
 pov-simple-backup (0.6) precise; urgency=low
 
   * New commands: back_up_svn, back_up_uncompressed, back_up_uncompressed_to.
