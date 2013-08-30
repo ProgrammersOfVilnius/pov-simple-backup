@@ -111,6 +111,18 @@ back_up_to() {
     estimate "$outfile"
 }
 
+back_up_uncompressed() {
+    pathname=$1
+    outfile=$(backupdir)/$(slugify "$pathname").tar
+    estimate "$outfile"
+}
+
+back_up_to_uncompressed() {
+    name=$1
+    outfile=$(backupdir)/$name.tar
+    estimate "$outfile"
+}
+
 back_up_dpkg_selections() {
     outfile=$(backupdir)/dpkg--get-selections.gz
     estimate "$outfile"
@@ -123,6 +135,12 @@ back_up_postgresql() {
 
 back_up_mysql() {
     outfile=$(backupdir)/mysql-dump.sql.gz
+    estimate "$outfile"
+}
+
+back_up_svn() {
+    pathname=$1
+    outfile=$(backupdir)/$(slugify "$pathname").svndump.gz
     estimate "$outfile"
 }
 
