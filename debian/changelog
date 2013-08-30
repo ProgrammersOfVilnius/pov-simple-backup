@@ -1,4 +1,4 @@
-pov-simple-backup (0.3) UNRELEASED; urgency=low
+pov-simple-backup (0.3) precise; urgency=low
 
   * Make pov-simple-backup -S output something even if you don't use
     clean_up_old_backups in the config file.
@@ -7,7 +7,7 @@ pov-simple-backup (0.3) UNRELEASED; urgency=low
   * Changed output format of pov-simple-backup -S slightly for clarity.
   * Show a grand total at the end of pov-simple-backup -S output.
 
- -- Marius Gedminas <marius@gedmin.as>  Thu, 29 Aug 2013 12:13:10 +0300
+ -- Marius Gedminas <marius@gedmin.as>  Fri, 30 Aug 2013 09:14:54 +0300
 
 pov-simple-backup (0.2) precise; urgency=low
 
