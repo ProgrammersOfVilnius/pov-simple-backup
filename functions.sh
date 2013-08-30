@@ -101,7 +101,7 @@ back_up_to() {
     check_overwrite "$outfile" || return
     shift 2
     [ $dry_run -ne 0 ] && return
-    tar czf "$outfile" "${pathname#/}" "$@"
+    tar -czf "$outfile" "${pathname#/}" "$@"
 }
 
 # back_up_dpkg_selections
