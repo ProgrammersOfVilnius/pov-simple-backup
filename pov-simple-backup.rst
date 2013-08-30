@@ -62,6 +62,22 @@ Example ::
     copy_backup_to user@otherserver:/backup/myhostname/ -i /path/to/ssh-key.rsa
 
 
+CONFIG FILE VARIABLES
+=====================
+
+The values of these influence backup commands.
+
+**BACKUP_ROOT** (default: ``/backup``)
+  Location for the backups
+
+  Example::
+
+    BACKUP_ROOT=/backups/$(hostname -s)
+
+    back_up /etc
+    ...
+
+
 CONFIG FILE COMMANDS
 ====================
 
