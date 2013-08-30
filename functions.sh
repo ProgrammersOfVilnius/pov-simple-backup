@@ -211,7 +211,7 @@ rsync_to() {
     info "Copying $what to $where"
     shift 2
     [ $dry_run -ne 0 ] && return
-    rsync -az -e "ssh -q -o BatchMode=yes $@" "$what" "${where}"
+    rsync -az -e "ssh -q -o BatchMode=yes $*" "$what" "${where}"
 }
 
 # rsync_backup_to [<user>@]<server>:<path> [<ssh options>]
