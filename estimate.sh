@@ -23,7 +23,7 @@ error() {
 }
 
 backupdir() {
-    dir=$BACKUP_ROOT/$DATE
+    dir=$BACKUP_ROOT/$DATE$BACKUP_SUFFIX
     echo "$dir"
 }
 
