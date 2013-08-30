@@ -123,7 +123,7 @@ clean_up_old_backups() {
     pretty_size=$(pretty_size $size)
     total=$((size * keep))
     pretty_total=$(pretty_size $total)
-    echo "$keep copies of $where ($pretty_size) is $pretty_total"
+    echo "$keep copies of ${where%/}/YYYY-MM-DD$suffix ($pretty_size) is $pretty_total"
 }
 
 copy_backup_to() {
