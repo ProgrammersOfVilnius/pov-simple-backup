@@ -1,3 +1,9 @@
+pov-simple-backup (0.6) UNRELEASED; urgency=low
+
+  * New command: back_up_svn.
+
+ -- Marius Gedminas <marius@gedmin.as>  Fri, 30 Aug 2013 17:19:00 +0300
+
 pov-simple-backup (0.5) precise; urgency=low
 
   * Bugfix: make 'rsync_to user@host:dir -i identity_file' work.

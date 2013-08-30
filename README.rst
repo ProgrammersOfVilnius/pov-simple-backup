@@ -104,6 +104,26 @@ back_up_mysql
   - a text dump file is inefficient
 
 
+back_up_svn <pathname>
+  Back up a single SVN repository
+
+  Creates <filename>.svndump.gz, where the <filename> is constructed
+  from the <pathname> by stripping leading slashes and replacing
+  all other slashes with hyphens.
+
+  Bugs:
+
+  - does not back up hooks/ and conf/ subdirectories
+
+
+  Example::
+
+      back_up_svn /var/lib/svn/myrepo
+      back_up /var/lib/svn/myrepo/conf
+      back_up /var/lib/svn/myrepo/hooks
+
+
+
 clean_up_old_backups <number> [<directory> [<suffix>]]
   Remove old backups, keep last <number>
 

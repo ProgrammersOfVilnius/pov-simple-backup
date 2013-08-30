@@ -150,6 +150,35 @@ back_up_mysql() {
     mysqldump --defaults-file=/etc/mysql/debian.cnf --all-databases --events | gzip > "$outfile"
 }
 
+# back_up_svn <pathname>
+#   Back up a single SVN repository
+#
+#   Creates <filename>.svndump.gz, where the <filename> is constructed
+#   from the <pathname> by stripping leading slashes and replacing
+#   all other slashes with hyphens.
+#
+#   Bugs:
+#
+#   - does not back up hooks/ and conf/ subdirectories
+#
+#   Example::
+#
+#       back_up_svn /var/lib/svn/myrepo
+#       back_up /var/lib/svn/myrepo/conf
+#       back_up /var/lib/svn/myrepo/hooks
+#
+back_up_svn() {
+    pathname=$1
+    name=$(slugify "$pathname")
+    outfile=$(backupdir)/$name.svndump.gz
+    info "Backing up $pathname"
+    check_overwrite "$outfile" || return
+    [ $dry_run -ne 0 ] && return
+    (svnadmin dump "$pathname" | gzip > "$outfile") 2>&1 \
+        | grep -v '^\* Dumped revision'
+}
+
+
 # clean_up_old_backups <number> [<directory> [<suffix>]]
 #   Remove old backups, keep last <number>
 #
