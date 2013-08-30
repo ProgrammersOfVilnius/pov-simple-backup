@@ -71,16 +71,28 @@ estimate() {
     fi
 }
 
+grand_total=0
+backup_root_included=0
+sizes_reported=0
+
 estimate_summary() {
-    dir=$(backupdir)
-    size=$(size_of "$dir")
-    test -n "$size" || size=$(size_of_last_backup "$BACKUP_ROOT")
-    test -n "$size" || {
-        error "Backup was not created yet ($dir missing)"
-        exit 1
-    }
-    pretty_size=$(pretty_size $size)
-    echo "$dir is $pretty_size"
+    if [ $backup_root_included -eq 0 ]; then
+        dir=$(backupdir)
+        size=$(size_of "$dir")
+        test -n "$size" || size=$(size_of_last_backup "$BACKUP_ROOT")
+        test -n "$size" || {
+            error "Backup was not created yet ($dir missing)"
+            exit 1
+        }
+        pretty_size=$(pretty_size $size)
+        echo "$dir is $pretty_size"
+        grand_total=$((grand_total + size))
+        sizes_reported=$((sizes_reported + 1))
+    fi
+    if [ $sizes_reported -ge 2 ]; then
+        pretty_size=$(pretty_size $grand_total)
+        echo "Total: $pretty_size"
+    fi
 }
 
 #
@@ -124,6 +136,11 @@ clean_up_old_backups() {
     total=$((size * keep))
     pretty_total=$(pretty_size $total)
     echo "$keep copies of ${where%/}/YYYY-MM-DD$suffix ($pretty_size) is $pretty_total"
+    grand_total=$((grand_total + total))
+    sizes_reported=$((sizes_reported + 1))
+    if [ x"$where" = x"$BACKUP_ROOT" ]; then
+        backup_root_included=1
+    fi
 }
 
 copy_backup_to() {
