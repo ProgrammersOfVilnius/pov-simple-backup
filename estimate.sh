@@ -41,7 +41,7 @@ size_of_last_backup() {
     where=$1
     suffix=$2
     test -d "$where" || return
-    last_backup=$(ls -rd "${where%/}"/$DATE_GLOB$suffix 2>/dev/null | tail -n 1)
+    last_backup=$(ls -d "${where%/}"/$DATE_GLOB$suffix 2>/dev/null | tail -n 1)
     test -n "$last_backup" || return
     size_of "$last_backup"
 }
