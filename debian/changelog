@@ -2,6 +2,7 @@ pov-simple-backup (0.5) UNRELEASED; urgency=low
 
   * Bugfix: make 'rsync_to user@host:dir -i identity_file' work.
   * Document the BACKUP_ROOT variable.
+  * New variable: BACKUP_SUFFIX.
 
  -- Marius Gedminas <marius@gedmin.as>  Fri, 30 Aug 2013 15:52:56 +0300
 

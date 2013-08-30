@@ -78,6 +78,23 @@ The values of these influence backup commands.
     ...
 
 
+**BACKUP_SUFFIX** (default: empty)
+  Suffix for backup directories
+
+  Example::
+
+    back_up /etc
+    ...
+    clean_old_backups 14
+
+    BACKUP_SUFFIX=-db
+    back_up_postgresql
+    clean_old_backups 2
+
+  would keep 14 nightly backups in /backup/YYYY-MM-DD, and two
+  PostgreSQL nightly backups in /backup/YYYY-MM-DD-db
+
+
 CONFIG FILE COMMANDS
 ====================
 

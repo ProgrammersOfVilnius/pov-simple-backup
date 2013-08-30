@@ -26,7 +26,7 @@ error() {
 }
 
 backupdir() {
-    dir=$BACKUP_ROOT/$DATE
+    dir=$BACKUP_ROOT/$DATE$BACKUP_SUFFIX
     if [ $dry_run -eq 0 ] && ! [ -d "$dir" ]; then
         info "Creating $dir" 1>&3
         mkdir -p "$dir"
@@ -163,7 +163,7 @@ back_up_mysql() {
 clean_up_old_backups() {
     keep=$1
     where=${2:-$BACKUP_ROOT}
-    suffix=$3
+    suffix=${3:-$BACKUP_SUFFIX}
     if [ -n "$suffix" ]; then
         info "Cleaning up old backups in $where ($suffix)"
     else
