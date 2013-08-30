@@ -4,6 +4,8 @@ date := $(shell dpkg-parsechangelog | grep ^Date: | cut -d: -f 2- | date --date=
 
 VCS_STATUS = git status --porcelain
 
+manpage = pov-simple-backup.rst
+
 .PHONY: all
 all: pov-simple-backup pov-simple-backup.8
 
@@ -14,16 +16,27 @@ all: pov-simple-backup pov-simple-backup.8
 	rst2man $< > $@
 
 .PHONY: test check
-test check: check-docs
+test check: check-version check-docs
 	./tests.sh
+
+.PHONY: checkversion
+check-version:
+	@grep -q ":Version: $(version)" $(manpage) || { \
+	    echo "Version number in $(manpage) doesn't match debian/changelog ($(version))" 2>&1; \
+	    exit 1; \
+	}
+	@grep -q ":Date: $(date)" $(manpage) || { \
+	    echo "Date in $(manpage) doesn't match debian/changelog ($(date))" 2>&1; \
+	    exit 1; \
+	}
 
 .PHONY: check-docs
 check-docs:
-	@./extract-documentation.py -c README.rst -c pov-simple-backup.rst || echo "Run make update-docs please"
+	@./extract-documentation.py -c README.rst -c $(manpage) || echo "Run make update-docs please"
 
 .PHONY: update-docs
 update-docs:
-	./extract-documentation.py -u README.rst -u pov-simple-backup.rst
+	./extract-documentation.py -u README.rst -u $(manpage)
 	$(MAKE)
 
 .PHONY: install
@@ -36,7 +49,7 @@ install: pov-simple-backup
 
 .PHONY: clean-build-tree
 clean-build-tree:
-	@./extract-documentation.py -c README.rst -c pov-simple-backup.rst || { echo "Run make update-docs please" 1>&2; exit 1; }
+	@./extract-documentation.py -c README.rst -c $(manpage) || { echo "Run make update-docs please" 1>&2; exit 1; }
 	@test -z "`$(VCS_STATUS) 2>&1`" || { echo; echo "Your working tree is not clean; please commit and try again" 1>&2; $(VCS_STATUS); exit 1; }
 	rm -rf pkgbuild/$(source)
 	git archive --format=tar --prefix=pkgbuild/$(source)/ HEAD | tar -xf -
