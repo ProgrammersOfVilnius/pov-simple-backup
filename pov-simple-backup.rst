@@ -134,6 +134,39 @@ back_up_to <name> <pathname> [<tar options>]
    to omit leading slashes to avoid warnings from tar.
 
 
+back_up_uncompressed <pathname> [<tar options>]
+  Back up a directory or a single file
+
+  Creates <filename>.tar, where the <filename> is constructed
+  from the <pathname> by stripping leading slashes and replacing
+  all other slashes with hyphens.
+
+  Examples::
+
+      back_up_uncompressed /git/myrepo.git
+
+   would create git-myrepo.git.tar
+
+   Note: when using tar's ``--exclude``, be sure to omit both the leading and
+   the trailing slash!  Otherwise it will be ignored.
+
+
+back_up_uncompressed_to <name> <pathname> [<tar options>]
+  Back up a directory or a file.
+
+  Creates <name>.tar.
+
+  Examples::
+
+      back_up_uncompressed_to backup-skeleton /backups/host1 backups/host2 --no-recursive
+
+   Note: when using tar's ``--exclude``, be sure to omit both the leading and
+   the trailing slash!  Otherwise it will be ignored.
+
+   Note: you can back up multiple files/directories, but you'll have
+   to omit leading slashes to avoid warnings from tar.
+
+
 back_up_dpkg_selections
   Back up dpkg selections (i.e. list of installed packages)
 

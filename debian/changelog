@@ -1,6 +1,6 @@
 pov-simple-backup (0.6) UNRELEASED; urgency=low
 
-  * New command: back_up_svn.
+  * New commands: back_up_svn, back_up_uncompressed, back_up_uncompressed_to.
 
  -- Marius Gedminas <marius@gedmin.as>  Fri, 30 Aug 2013 17:19:00 +0300
 
