@@ -2,9 +2,18 @@ source := $(shell dpkg-parsechangelog | awk '$$1 == "Source:" { print $$2 }')
 version := $(shell dpkg-parsechangelog | awk '$$1 == "Version:" { print $$2 }')
 date := $(shell dpkg-parsechangelog | grep ^Date: | cut -d: -f 2- | date --date="$$(cat)" +%Y-%m-%d)
 
-VCS_STATUS = git status --porcelain
-
 manpage = pov-simple-backup.rst
+
+# for testing in vagrant:
+#   vagrant box add precise64 http://files.vagrantup.com/precise64.box
+#   mkdir -p ~/tmp/vagrantbox && cd ~/tmp/vagrantbox
+#   vagrant init precise64
+#   vagrant ssh-config --host vagrantbox >> ~/.ssh/config
+# now you can 'make vagrant-test-install', then 'ssh vagrantbox' and play
+# with the package
+VAGRANT_DIR = ~/tmp/vagrantbox
+VAGRANT_SSH_ALIAS = vagrantbox
+
 
 .PHONY: all
 all: pov-simple-backup pov-simple-backup.8
@@ -47,6 +56,9 @@ install: pov-simple-backup
 	install -D pov-simple-backup $(DESTDIR)/usr/sbin/pov-simple-backup
 	install -D cron_daily.sh $(DESTDIR)/etc/cron.daily/pov-simple-backup
 
+
+VCS_STATUS = git status --porcelain
+
 .PHONY: clean-build-tree
 clean-build-tree:
 	@./extract-documentation.py -c README.rst -c $(manpage) || { echo "Run make update-docs please" 1>&2; exit 1; }
@@ -68,3 +80,9 @@ upload-to-ppa: source-package
 .PHONY: binary-package
 binary-package: clean-build-tree
 	cd pkgbuild/$(source) && debuild -i -k$(GPGKEY)
+
+.PHONY: vagrant-test-install
+vagrant-test-install: binary-package
+	cp pkgbuild/$(source)_$(version)_all.deb $(VAGRANT_DIR)/
+	cd $(VAGRANT_DIR) && vagrant up
+	ssh $(VAGRANT_SSH_ALIAS) 'sudo DEBIAN_FRONTEND=noninteractive dpkg -i /vagrant/$(source)_$(version)_all.deb && sudo apt-get install -f'
