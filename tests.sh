@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 n_tests=0
 
@@ -37,6 +37,11 @@ assertEqual() {
     n_tests=$(($n_tests + 1))
 }
 
+list_functions() {
+    filename=$1
+    grep
+}
+
 . $(dirname $0)/functions.sh
 
 assertEqual slugify /etc = etc
@@ -52,5 +57,14 @@ assertEqual pretty_size 1024 = 1024K
 assertEqual pretty_size 10240 = 10M
 assertEqual pretty_size 1048576 = 1024M
 assertEqual pretty_size 10485760 = 10G
+
+back_up_functions=$(sed -ne '/^# Back up functions/,$p' functions.sh | sed -ne 's/^\([a-zA-Z0-9_]\+\)() {.*/\1/p')
+estimate_functions=$(sed -ne '/^# Overridden back up functions/,$p' estimate.sh | sed -ne 's/^\([a-zA-Z0-9_]\+\)() {.*/\1/p')
+diff=$(diff -u <(echo "$back_up_functions") <(echo "$estimate_functions"))
+if [ -n "$diff" ]; then
+    warn "functions.sh and estimate.sh do not define the same functions:"
+    warn "$diff"
+    exit 1
+fi
 
 echo "all $n_tests tests passed"
