@@ -1,6 +1,8 @@
 pov-simple-backup (0.7) UNRELEASED; urgency=low
 
   * Make pov-simple-backup -S handle back_up_uncompressed_to correctly.
+  * Make pov-simple-backup -S handle $BACKUP_SUFFIX correctly in
+    clean_up_old_backups.
 
  -- Marius Gedminas <marius@gedmin.as>  Fri, 30 Aug 2013 18:15:59 +0300
 

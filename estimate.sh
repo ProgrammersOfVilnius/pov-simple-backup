@@ -147,7 +147,7 @@ back_up_svn() {
 clean_up_old_backups() {
     keep=$1
     where=${2:-$BACKUP_ROOT}
-    suffix=$3
+    suffix=${3:-$BACKUP_SUFFIX}
     size=$(size_of_last_backup "$where" "$suffix")
     test -n "$size" || return
     pretty_size=$(pretty_size $size)
