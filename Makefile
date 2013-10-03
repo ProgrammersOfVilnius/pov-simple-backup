@@ -80,6 +80,8 @@ upload-to-ppa: source-package
 .PHONY: binary-package
 binary-package: clean-build-tree
 	cd pkgbuild/$(source) && debuild -i -k$(GPGKEY)
+	@echo
+	@echo "Built pkgbuild/$(source)_$(version)_all.deb"
 
 .PHONY: vagrant-test-install
 vagrant-test-install: binary-package
