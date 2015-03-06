@@ -1,3 +1,9 @@
+pov-simple-backup (0.8) precise; urgency=medium
+
+  * back_up_dpkg_selections now also backs up /var/lib/apt/extended_states
+
+ -- Marius Gedminas <marius@gedmin.as>  Fri, 06 Mar 2015 12:00:02 +0200
+
 pov-simple-backup (0.7) precise; urgency=low
 
   * Make pov-simple-backup -S handle back_up_uncompressed_to correctly.

@@ -7,8 +7,8 @@ create non-incremental nightly backups
 --------------------------------------
 
 :Author: Marius Gedminas <marius@gedmin.as>
-:Date: 2013-09-02
-:Version: 0.7
+:Date: 2015-03-06
+:Version: 0.8
 :Manual section: 8
 
 
@@ -170,7 +170,7 @@ back_up_uncompressed_to <name> <pathname> [<tar options>]
 back_up_dpkg_selections
   Back up dpkg selections (i.e. list of installed packages)
 
-  Creates dpkg--get-selections.gz
+  Creates dpkg--get-selections.gz and var-lib-apt-extended_states.gz
 
 
 back_up_postgresql

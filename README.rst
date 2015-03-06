@@ -112,7 +112,7 @@ back_up_uncompressed_to <name> <pathname> [<tar options>]
 back_up_dpkg_selections
   Back up dpkg selections (i.e. list of installed packages)
 
-  Creates dpkg--get-selections.gz
+  Creates dpkg--get-selections.gz and var-lib-apt-extended_states.gz
 
 
 back_up_postgresql

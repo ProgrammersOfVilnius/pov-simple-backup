@@ -153,13 +153,17 @@ back_up_uncompressed_to() {
 # back_up_dpkg_selections
 #   Back up dpkg selections (i.e. list of installed packages)
 #
-#   Creates dpkg--get-selections.gz
+#   Creates dpkg--get-selections.gz and var-lib-apt-extended_states.gz
 back_up_dpkg_selections() {
     outfile=$(backupdir)/dpkg--get-selections.gz
     info "Backing up dpkg selections"
     check_overwrite "$outfile" || return
     [ $dry_run -ne 0 ] && return
     dpkg --get-selections | gzip > "$outfile"
+    infile=/var/lib/apt/extended_states
+    outfile=$(backupdir)/var-lib-apt-extended_states.gz
+    check_overwrite "$outfile" || return
+    gzip < "$infile" > "$outfile"
 }
 
 # back_up_postgresql
