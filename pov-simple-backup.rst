@@ -293,3 +293,5 @@ BUGS
 
 **pov-simple-backup** is reinventing the wheel, badly.  For example
 it doesn't support incremental backups.
+
+**back_up_to** is hard to use.
