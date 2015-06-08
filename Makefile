@@ -70,8 +70,8 @@ clean-build-tree:
 source-package: clean-build-tree
 	cd pkgbuild/$(source) && debuild -S -i -k$(GPGKEY)
 
-.PHONY: upload-to-ppa
-upload-to-ppa: source-package
+.PHONY: upload-to-ppa release
+release upload-to-ppa: source-package
 	dput ppa:pov/ppa pkgbuild/$(source)_$(version)_source.changes
 	git tag $(version)
 	git push
