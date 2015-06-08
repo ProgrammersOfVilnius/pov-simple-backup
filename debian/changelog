@@ -1,3 +1,9 @@
+pov-simple-backup (0.9) UNRELEASED; urgency=medium
+
+  * Slightly better error reporting for rsync errors.
+
+ -- Marius Gedminas <marius@gedmin.as>  Mon, 08 Jun 2015 10:17:27 +0300
+
 pov-simple-backup (0.8) precise; urgency=medium
 
   * back_up_dpkg_selections now also backs up /var/lib/apt/extended_states
