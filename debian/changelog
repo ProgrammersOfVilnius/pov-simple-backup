@@ -1,8 +1,8 @@
-pov-simple-backup (0.10) UNRELEASED; urgency=medium
+pov-simple-backup (0.10) precise; urgency=medium
 
   * New option: -g (generate config).
 
- -- Marius Gedminas <marius@gedmin.as>  Mon, 02 Nov 2015 11:52:18 +0200
+ -- Marius Gedminas <marius@gedmin.as>  Mon, 02 Nov 2015 12:11:18 +0200
 
 pov-simple-backup (0.9) precise; urgency=medium
 
