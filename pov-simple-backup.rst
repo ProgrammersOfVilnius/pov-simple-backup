@@ -7,8 +7,8 @@ create non-incremental nightly backups
 --------------------------------------
 
 :Author: Marius Gedminas <marius@gedmin.as>
-:Date: 2015-06-08
-:Version: 0.9
+:Date: 2015-11-02
+:Version: 0.10
 :Manual section: 8
 
 
@@ -18,6 +18,8 @@ SYNOPSIS
 **pov-simple-backup** [**-v**] [**-n**] [**-o** | **-s**] [**-f** *configfile*]
 
 **pov-simple-backup** **-S** [**-v**] [**-f** *configfile*]
+
+**pov-simple-backup** **-g** > *configfile*
 
 **pov-simple-backup** **-h**
 
@@ -40,7 +42,9 @@ OPTIONS
              back them up.
 -o           Overwrite existing backup files instead of aborting.
 -s           Skip existing backup files instead of aborting.
--S           Instead of taking a backup, estimate the size of backups
+-S           Instead of taking a backup, estimate the size of backups.
+-g           Instead of taking a backup generate a config file and print it
+             to the standard output.
 -f FILENAME  Use the specified config file instead of ``/etc/pov/backup``.
 
 
@@ -60,6 +64,12 @@ Example ::
     back_up_postgresql
     clean_up_old_backups 14
     copy_backup_to user@otherserver:/backup/myhostname/ -i /path/to/ssh-key.rsa
+
+Usually you'll generate a skeleton with ::
+
+    pov-simple-backup -g > /etc/pov/backup
+
+and then edit it to suit your needs.
 
 
 CONFIG FILE VARIABLES

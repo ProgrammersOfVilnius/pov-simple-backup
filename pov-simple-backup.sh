@@ -6,6 +6,7 @@ export PATH
 usage="\
 Usage: pov-simple-backup [-v] [-n] [-o|-s] [-f configfile]
        pov-simple-backup -S [-v] [-f configfile]
+       pov-simple-backup -g > configfile
        pov-simple-backup -h"
 
 verbose=0
@@ -13,11 +14,12 @@ overwrite=0
 skip=0
 dry_run=0
 estimate_size=0
+generate=0
 configfile=/etc/pov/backup
 
 libdir=.
 
-while getopts hvf:osnS OPT; do
+while getopts hvf:gosnS OPT; do
     case "$OPT" in
         v)
             verbose=1
@@ -25,6 +27,9 @@ while getopts hvf:osnS OPT; do
         h)
             echo "$usage"
             exit 0
+            ;;
+        g)
+            generate=1
             ;;
         f)
             configfile=$(readlink -f "$OPTARG")
@@ -53,6 +58,12 @@ shift $(($OPTIND - 1))
 if [ $# -ne 0 ]; then
     echo "$usage" 1>&2
     exit 1
+fi
+
+if [ $generate -ne 0 ]; then
+    . "$libdir/generate.sh"
+    generate
+    exit 0
 fi
 
 if ! [ -f "$configfile" ]; then

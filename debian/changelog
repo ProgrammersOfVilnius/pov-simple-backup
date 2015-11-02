@@ -1,3 +1,9 @@
+pov-simple-backup (0.10) UNRELEASED; urgency=medium
+
+  * New option: -g (generate config).
+
+ -- Marius Gedminas <marius@gedmin.as>  Mon, 02 Nov 2015 11:52:18 +0200
+
 pov-simple-backup (0.9) precise; urgency=medium
 
   * Slightly better error reporting for rsync errors.

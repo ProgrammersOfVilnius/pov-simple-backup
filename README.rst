@@ -34,6 +34,8 @@ following command-line options are available:
 -o              overwrite existing backup files
 -s              skip existing backup files
 -S              instead of taking a backup, estimate the size of backups
+-g              instead of taking a backup generate a config file and print it
+                to the standard output
 -f CONFIG-FILE  use *CONFIG-FILE* instead of /etc/pov/backup
 
 
