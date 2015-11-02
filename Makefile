@@ -98,3 +98,7 @@ vagrant-test-install: binary-package
 	cp pkgbuild/$(source)_$(version)_all.deb $(VAGRANT_DIR)/
 	cd $(VAGRANT_DIR) && vagrant up
 	ssh $(VAGRANT_SSH_ALIAS) 'sudo DEBIAN_FRONTEND=noninteractive dpkg -i /vagrant/$(source)_$(version)_all.deb && sudo apt-get install -f'
+
+.PHONY: pbuilder-test-build
+pbuilder-test-build: source-package
+	pbuilder-dist precise build pkgbuild/$(source)_$(version).dsc
