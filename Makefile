@@ -33,12 +33,19 @@ test check: check-version check-docs
 check-version:
 	@grep -q ":Version: $(version)" $(manpage) || { \
 	    echo "Version number in $(manpage) doesn't match debian/changelog ($(version))" 2>&1; \
+	    echo "Run make update-version" 2>&1; \
 	    exit 1; \
 	}
 	@grep -q ":Date: $(date)" $(manpage) || { \
 	    echo "Date in $(manpage) doesn't match debian/changelog ($(date))" 2>&1; \
+	    echo "Run make update-version" 2>&1; \
 	    exit 1; \
 	}
+
+.PHONY: update-version
+update-version:
+	sed -i -e 's/^:Version: .*/:Version: $(version)/' $(manpage)
+	sed -i -e 's/^:Date: .*/:Date: $(date)/' $(manpage)
 
 .PHONY: check-target
 check-target:
