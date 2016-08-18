@@ -1,11 +1,11 @@
-pov-simple-backup (0.11) UNRELEASED; urgency=medium
+pov-simple-backup (0.11) precise; urgency=medium
 
   * Smarter verbose output when you use a tar option in front of a path,
     e.g. 'back_up_to foo --option'.
   * Documentation warns that tar's --no-recursive must come before the
     directory you don't want to recurse, in new versions of tar.
 
- -- Marius Gedminas <marius@gedmin.as>  Thu, 18 Aug 2016 10:18:15 +0300
+ -- Marius Gedminas <marius@gedmin.as>  Thu, 18 Aug 2016 10:24:09 +0300
 
 pov-simple-backup (0.10) precise; urgency=medium
 

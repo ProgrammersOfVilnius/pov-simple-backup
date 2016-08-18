@@ -79,7 +79,12 @@ VCS_STATUS = git status --porcelain
 .PHONY: clean-build-tree
 clean-build-tree:
 	@./extract-documentation.py -c README.rst -c $(manpage) || { echo "Run make update-docs please" 1>&2; exit 1; }
-	@test -z "`$(VCS_STATUS) 2>&1`" || { echo; echo "Your working tree is not clean; please commit and try again" 1>&2; $(VCS_STATUS); exit 1; }
+	@test -z "`$(VCS_STATUS) 2>&1`" || { \
+	    echo; \
+	    echo "Your working tree is not clean; please commit and try again" 1>&2; \
+	    $(VCS_STATUS); \
+	    echo 'E.g. run git commit -am "Release $(version)"' 1>&2; \
+	    exit 1; }
 	rm -rf pkgbuild/$(source)
 	git archive --format=tar --prefix=pkgbuild/$(source)/ HEAD | tar -xf -
 
