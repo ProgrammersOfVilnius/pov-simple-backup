@@ -44,6 +44,9 @@ assertEqual slugify /etc/ = etc
 assertEqual slugify /var/lib/dpkg/info = var-lib-dpkg-info
 assertEqual slugify "" = root
 
+assertEqual backup_name slug --option = slug
+assertEqual backup_name slug /pathname = /pathname
+
 . "$(dirname "$0")"/estimate.sh
 
 assertEqual pretty_size 0 = 0K

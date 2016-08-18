@@ -34,8 +34,32 @@ backupdir() {
     echo "$dir"
 }
 
+# slugify <pathname>
+#   Convert a pathname into a "slug" suitable for a filename
+#
+#   Strips leading and trailing slashes and converts internal slashes to
+#   dashes.
+#
+#   Special-cases / as "root".
 slugify() {
-    echo "$1"|sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
+    printf "%s\n" "$1"|sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
+}
+
+# backup_name <slug> <maybe-pathname>
+#   Comes up with a pretty name for a backup
+#
+#   Internal helper for back_up_to
+#
+#   Usually we want to say "Backing up /folder", but sometimes a tar option
+#   must come first before the filename, and "Backing up --no-recursive" looks
+#   silly.
+backup_name() {
+    slug=$1
+    pathname=$2
+    case "$pathname" in
+        /*) printf "%s\n" "$pathname";;
+        *)  printf "%s\n" "$slug";;
+    esac
 }
 
 check_overwrite() {
@@ -86,7 +110,11 @@ back_up() {
 #
 #   Examples::
 #
-#       back_up_to backup-skeleton /backups/host1 backups/host2 --no-recursive
+#       back_up_to backup-skeleton --no-recursive backups/host1 backups/host2
+#
+#    Note: when using tar's ``--no-recursive``, be sure to specify it *before*
+#    the directory you don't want to recurse into.  Otherwise it may be
+#    ignored, depending on the version of tar.
 #
 #    Note: when using tar's ``--exclude``, be sure to omit both the leading and
 #    the trailing slash!  Otherwise it will be ignored.
@@ -97,7 +125,7 @@ back_up_to() {
     name=$1
     pathname=$2
     outfile=$(backupdir)/$name.tar.gz
-    info "Backing up $pathname"
+    info "Backing up $(backup_name "$name" "$pathname")"
     check_overwrite "$outfile" || return
     shift 2
     [ $dry_run -ne 0 ] && return
@@ -132,7 +160,11 @@ back_up_uncompressed() {
 #
 #   Examples::
 #
-#       back_up_uncompressed_to backup-skeleton /backups/host1 backups/host2 --no-recursive
+#       back_up_uncompressed_to backup-skeleton --no-recursive /backups/host1 backups/host2
+#
+#    Note: when using tar's ``--no-recursive``, be sure to specify it *before*
+#    the directory you don't want to recurse into.  Otherwise it may be
+#    ignored, depending on the version of tar.
 #
 #    Note: when using tar's ``--exclude``, be sure to omit both the leading and
 #    the trailing slash!  Otherwise it will be ignored.
@@ -143,7 +175,7 @@ back_up_uncompressed_to() {
     name=$1
     pathname=$2
     outfile=$(backupdir)/$name.tar
-    info "Backing up $pathname"
+    info "Backing up $(backup_name "$name" "$pathname")"
     check_overwrite "$outfile" || return
     shift 2
     [ $dry_run -ne 0 ] && return

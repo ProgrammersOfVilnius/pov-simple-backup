@@ -69,7 +69,11 @@ back_up_to <name> <pathname> [<tar options>]
 
   Examples::
 
-      back_up_to backup-skeleton /backups/host1 backups/host2 --no-recursive
+      back_up_to backup-skeleton --no-recursive backups/host1 backups/host2
+
+   Note: when using tar's ``--no-recursive``, be sure to specify it *before*
+   the directory you don't want to recurse into.  Otherwise it may be
+   ignored, depending on the version of tar.
 
    Note: when using tar's ``--exclude``, be sure to omit both the leading and
    the trailing slash!  Otherwise it will be ignored.
@@ -102,7 +106,11 @@ back_up_uncompressed_to <name> <pathname> [<tar options>]
 
   Examples::
 
-      back_up_uncompressed_to backup-skeleton /backups/host1 backups/host2 --no-recursive
+      back_up_uncompressed_to backup-skeleton --no-recursive /backups/host1 backups/host2
+
+   Note: when using tar's ``--no-recursive``, be sure to specify it *before*
+   the directory you don't want to recurse into.  Otherwise it may be
+   ignored, depending on the version of tar.
 
    Note: when using tar's ``--exclude``, be sure to omit both the leading and
    the trailing slash!  Otherwise it will be ignored.
