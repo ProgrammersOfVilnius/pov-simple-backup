@@ -13,7 +13,7 @@ test -n "$skip" || skip=0
 
 exec 3>&1
 
-DATE_GLOB=[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]
+DATE_GLOB="[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
 
 info() {
     if [ $verbose -ne 0 ] || [ $dry_run -ne 0 ]; then
@@ -35,7 +35,7 @@ backupdir() {
 }
 
 slugify() {
-    echo $1|sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
+    echo "$1"|sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
 }
 
 check_overwrite() {
@@ -248,7 +248,7 @@ clean_up_old_backups() {
     else
         info "Cleaning up old backups in $where"
     fi
-    to_remove=$(ls -rd "${where%/}"/$DATE_GLOB$suffix 2>/dev/null | tail -n +$(($keep+1)))
+    to_remove=$(ls -rd "${where%/}"/$DATE_GLOB"$suffix" 2>/dev/null | tail -n +$((keep+1)))
     if [ -n "$to_remove" ]; then
         echo "$to_remove" | while read fn; do
           info "  cleaning up $fn"

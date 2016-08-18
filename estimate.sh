@@ -10,7 +10,7 @@ test -n "$verbose" || verbose=0
 
 exec 3>&1
 
-DATE_GLOB=[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]
+DATE_GLOB="[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
 
 info() {
     if [ $verbose -ne 0 ]; then
@@ -28,7 +28,7 @@ backupdir() {
 }
 
 slugify() {
-    echo $1|sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
+    echo "$1"|sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
 }
 
 size_of() {
@@ -41,14 +41,14 @@ size_of_last_backup() {
     where=$1
     suffix=$2
     test -d "$where" || return
-    last_backup=$(ls -d "${where%/}"/$DATE_GLOB$suffix 2>/dev/null | tail -n 1)
+    last_backup=$(ls -d "${where%/}"/$DATE_GLOB"$suffix" 2>/dev/null | tail -n 1)
     test -n "$last_backup" || return
     size_of "$last_backup"
 }
 
 pretty_size() {
     size=$1
-    if [ $size -lt 10240 ]; then
+    if [ "$size" -lt 10240 ]; then
         echo "${size}K"
         return
     fi
@@ -66,7 +66,7 @@ estimate() {
     if [ $verbose -ne 0 ]; then
         size=$(size_of "$filename")
         test -n "$size" || return
-        pretty_size=$(pretty_size $size)
+        pretty_size=$(pretty_size "$size")
         echo "$filename is $pretty_size"
     fi
 }
@@ -84,7 +84,7 @@ estimate_summary() {
             error "Backup was not created yet ($dir missing)"
             exit 1
         }
-        pretty_size=$(pretty_size $size)
+        pretty_size=$(pretty_size "$size")
         echo "$dir is $pretty_size"
         grand_total=$((grand_total + size))
         sizes_reported=$((sizes_reported + 1))
@@ -150,7 +150,7 @@ clean_up_old_backups() {
     suffix=${3:-$BACKUP_SUFFIX}
     size=$(size_of_last_backup "$where" "$suffix")
     test -n "$size" || return
-    pretty_size=$(pretty_size $size)
+    pretty_size=$(pretty_size "$size")
     total=$((size * keep))
     pretty_total=$(pretty_size $total)
     echo "$keep copies of ${where%/}/YYYY-MM-DD$suffix ($pretty_size) is $pretty_total"

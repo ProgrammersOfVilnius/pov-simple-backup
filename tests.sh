@@ -15,11 +15,11 @@ assertEqual() {
         expected=$2
     elif [ x"$2" = x"=" ]; then
         args="$fn $1"
-        actual=$($fn $1)
+        actual=$($fn "$1")
         expected=$3
     elif [ x"$3" = x"=" ]; then
         args="$fn $1 $2"
-        actual=$($fn $1 $2)
+        actual=$($fn "$1" "$2")
         expected=$4
     else
         warn "expected one of these forms:"
@@ -34,22 +34,17 @@ assertEqual() {
         warn "assertion failure: $args == $actual (expected $expected)"
         exit 1
     fi
-    n_tests=$(($n_tests + 1))
+    n_tests=$((n_tests + 1))
 }
 
-list_functions() {
-    filename=$1
-    grep
-}
-
-. $(dirname $0)/functions.sh
+. "$(dirname "$0")"/functions.sh
 
 assertEqual slugify /etc = etc
 assertEqual slugify /etc/ = etc
 assertEqual slugify /var/lib/dpkg/info = var-lib-dpkg-info
 assertEqual slugify "" = root
 
-. $(dirname $0)/estimate.sh
+. "$(dirname "$0")"/estimate.sh
 
 assertEqual pretty_size 0 = 0K
 assertEqual pretty_size 1 = 1K
