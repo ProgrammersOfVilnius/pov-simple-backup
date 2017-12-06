@@ -4,11 +4,13 @@ date := $(shell dpkg-parsechangelog | grep ^Date: | cut -d: -f 2- | date --date=
 target_distribution := $(shell dpkg-parsechangelog | awk '$$1 == "Distribution:" { print $$2 }')
 
 manpage = pov-simple-backup.rst
+#
+# change this to the lowest supported Ubuntu LTS
+TARGET_DISTRO := trusty
 
 # for testing in vagrant:
-#   vagrant box add precise64 http://files.vagrantup.com/precise64.box
 #   mkdir -p ~/tmp/vagrantbox && cd ~/tmp/vagrantbox
-#   vagrant init precise64
+#   vagrant init ubuntu/trusty64
 #   vagrant ssh-config --host vagrantbox >> ~/.ssh/config
 # now you can 'make vagrant-test-install', then 'ssh vagrantbox' and play
 # with the package
@@ -49,9 +51,9 @@ update-version:
 
 .PHONY: check-target
 check-target:
-	@test "$(target_distribution)" = "precise" || { \
-	    echo "Distribution in debian/changelog should be 'precise'" 2>&1; \
-	    echo 'Run dch -r -D precise ""' 2>&1; \
+	@test "$(target_distribution)" = "$(TARGET_DISTRO)" || { \
+	    echo "Distribution in debian/changelog should be '$(TARGET_DISTRO)'" 2>&1; \
+	    echo 'Run dch -r -D $(TARGET_DISTRO) ""' 2>&1; \
 	    exit 1; \
 	}
 
@@ -113,4 +115,8 @@ vagrant-test-install: binary-package
 
 .PHONY: pbuilder-test-build
 pbuilder-test-build: source-package
-	pbuilder-dist precise build pkgbuild/$(source)_$(version).dsc
+	# NB: 1st time run pbuilder-dist $(TARGET_DISTRO) create
+	# NB: you need to periodically run pbuilder-dist $(TARGET_DISTRO) update
+	pbuilder-dist $(TARGET_DISTRO) build pkgbuild/$(source)_$(version).dsc
+	@echo
+	@echo "Look for the package in ~/pbuilder/$(TARGET_DISTRO)/"
