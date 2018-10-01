@@ -1,6 +1,7 @@
 pov-simple-backup (0.12) UNRELEASED; urgency=medium
 
   * Use /bin/bash instead of /bin/sh (GH: #7).
+  * Improve failure handling and reporting (GH: #4).
 
  -- Marius Gedminas <marius@gedmin.as>  Mon, 01 Oct 2018 15:50:01 +0300
 

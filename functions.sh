@@ -11,6 +11,8 @@ test -n "$dry_run" || dry_run=0
 test -n "$overwrite" || overwrite=0
 test -n "$skip" || skip=0
 
+set -o pipefail
+
 exec 3>&1
 
 DATE_GLOB="[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
@@ -124,12 +126,16 @@ back_up() {
 back_up_to() {
     name=$1
     pathname=$2
+    what=$(backup_name "$name" "$pathname")
     outfile=$(backupdir)/$name.tar.gz
-    info "Backing up $(backup_name "$name" "$pathname")"
+    info "Backing up $what"
     check_overwrite "$outfile" || return
     shift 2
     [ $dry_run -ne 0 ] && return
-    tar -czf "$outfile" "${pathname#/}" "$@"
+    # shellcheck disable=SC2015
+    tar -czf "$outfile.tmp" "${pathname#/}" "$@" \
+        && mv "$outfile.tmp" "$outfile" \
+        || error "failed to back up $what"
 }
 
 # back_up_uncompressed <pathname> [<tar options>]
@@ -174,12 +180,16 @@ back_up_uncompressed() {
 back_up_uncompressed_to() {
     name=$1
     pathname=$2
+    what=$(backup_name "$name" "$pathname")
     outfile=$(backupdir)/$name.tar
-    info "Backing up $(backup_name "$name" "$pathname")"
+    info "Backing up $what"
     check_overwrite "$outfile" || return
     shift 2
     [ $dry_run -ne 0 ] && return
-    tar -czf "$outfile" "${pathname#/}" "$@"
+    # shellcheck disable=SC2015
+    tar -czf "$outfile.tmp" "${pathname#/}" "$@" \
+        && mv "$outfile.tmp" "$outfile" \
+        || error "failed to back up $what"
 }
 
 # back_up_dpkg_selections
@@ -191,11 +201,17 @@ back_up_dpkg_selections() {
     info "Backing up dpkg selections"
     check_overwrite "$outfile" || return
     [ $dry_run -ne 0 ] && return
-    dpkg --get-selections | gzip > "$outfile"
+    # shellcheck disable=SC2015
+    dpkg --get-selections | gzip > "$outfile.tmp" \
+        && mv "$outfile.tmp" "$outfile" \
+        || error "failed to back up dpkg selections"
     infile=/var/lib/apt/extended_states
     outfile=$(backupdir)/var-lib-apt-extended_states.gz
     check_overwrite "$outfile" || return
-    gzip < "$infile" > "$outfile"
+    # shellcheck disable=SC2015
+    gzip < "$infile" > "$outfile.tmp" \
+        && mv "$outfile.tmp" "$outfile" \
+        || error "failed to back up apt extended_states"
 }
 
 # back_up_postgresql
@@ -212,7 +228,10 @@ back_up_postgresql() {
     info "Backing up PostgreSQL"
     check_overwrite "$outfile" || return
     [ $dry_run -ne 0 ] && return
-    sudo -u postgres pg_dumpall | gzip > "$outfile"
+    # shellcheck disable=SC2015
+    sudo -u postgres pg_dumpall | gzip > "$outfile.tmp" \
+        && mv "$outfile.tmp" "$outfile" \
+        || error "failed to back up PostgreSQL"
 }
 
 # back_up_mysql
@@ -229,7 +248,11 @@ back_up_mysql() {
     info "Backing up MySQL"
     check_overwrite "$outfile" || return
     [ $dry_run -ne 0 ] && return
-    mysqldump --defaults-file=/etc/mysql/debian.cnf --all-databases --events | gzip > "$outfile"
+    # shellcheck disable=SC2015
+    mysqldump --defaults-file=/etc/mysql/debian.cnf --all-databases --events \
+        | gzip > "$outfile.tmp" \
+        && mv "$outfile.tmp" "$outfile" \
+        || error "failed to back up MySQL"
 }
 
 # back_up_svn <pathname>
@@ -256,8 +279,11 @@ back_up_svn() {
     info "Backing up $pathname"
     check_overwrite "$outfile" || return
     [ $dry_run -ne 0 ] && return
-    (svnadmin dump "$pathname" | gzip > "$outfile") 2>&1 \
-        | grep -v '^\* Dumped revision'
+    # shellcheck disable=SC2015
+    (svnadmin dump "$pathname" | gzip > "$outfile.tmp") 2>&1 \
+        | (grep -v '^\* Dumped revision' || true) \
+        && mv "$outfile.tmp" "$outfile" \
+        || error "back_up_svn: failed to back up $pathname"
 }
 
 
