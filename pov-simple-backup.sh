@@ -84,6 +84,7 @@ cd / || exit 1
 
 BACKUP_ROOT=/backup
 DATE=$(date +%Y-%m-%d)
+GPG_RECIPIENTS=
 
 umask 077
 

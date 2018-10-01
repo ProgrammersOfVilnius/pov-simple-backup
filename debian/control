@@ -9,6 +9,7 @@ Homepage: https://github.com/ProgrammersOfVilnius/pov-simple-backup
 Package: pov-simple-backup
 Architecture: all
 Depends: ${misc:Depends}
+Recommends: python, gpg, rsync
 Description: simple nightly backup script
  * This is an unofficial package.
  .

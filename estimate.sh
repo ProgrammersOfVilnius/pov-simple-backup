@@ -164,6 +164,12 @@ back_up_svn() {
     estimate "$outfile"
 }
 
+encrypt_dir() {
+    local suffix=${1:-$BACKUP_SUFFIX}
+    local gpg_suffix=${2:-$suffix-gpg}
+    estimate "$(backupdir "$gpg_suffix")"
+}
+
 generate_checksums() {
     local suffix=${1:-$BACKUP_SUFFIX}
     local outfile

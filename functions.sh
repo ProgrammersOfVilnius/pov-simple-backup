@@ -10,6 +10,10 @@ test -n "$verbose" || verbose=0
 test -n "$dry_run" || dry_run=0
 test -n "$overwrite" || overwrite=0
 test -n "$skip" || skip=0
+test -n "$configfile" || configfile=/etc/pov/backup
+test -n "$libdir" || libdir=$(dirname "${BASH_SOURCE[0]}")
+test -n "$BACKUP_ROOT" || BACKUP_ROOT=/backup
+test -n "$DATE" || DATE=$(date +%Y-%m-%d)
 
 set -o pipefail
 
@@ -298,6 +302,81 @@ back_up_svn() {
         || error "back_up_svn: failed to back up $pathname"
 }
 
+# encrypt_dir [<suffix> [<new-suffix>]]
+#   Encrypt a backup directory using GPG
+#
+#   Creates a parallel backup directory with each backup file will be
+#   gpg-encrypted to the recipients specified in $GPG_RECIPIENTS.
+#
+#   Note: root's GPG keyring should already have the public keys of the
+#   specified recipients.
+#
+#   <suffix> defaults to $BACKUP_SUFFIX.
+#
+#   <new-suffix> defaults to <suffix>-gpg.
+#
+#   Do this after all the backup commands, and before all the rsync/scp
+#   commands.
+#
+#   Example::
+#
+#       GPG_RECIPIENTS=root@example.com,backup@example.com
+#
+#       back_up ...
+#       back_up ...
+#
+#       clean_old_backups
+#
+#       encrypt_dir
+#       generate_checksums -gpg
+#       clean_old_backups -gpg
+#
+#       BACKUP_SUFFIX=-gpg copy_backup_to remote:/backup/encrypted-stuff
+#
+#   Example::
+#
+#       GPG_RECIPIENTS=root@example.com,backup@example.com
+#
+#       back_up ...
+#       clean_old_backups
+#
+#       BACKUP_SUFFIX=-git
+#       back_up ...
+#       clean_old_backups
+#       BACKUP_SUFFIX=
+#
+#       encrypt_dir
+#       encrypt_dir -git
+#       generate_checksums -gpg
+#       generate_checksums -git-gpg
+#       clean_old_backups -gpg
+#       clean_old_backups -git-gpg
+#
+#       BACKUP_SUFFIX=-gpg copy_backup_to remote:/backup/encrypted-stuff
+#       BACKUP_SUFFIX=-git-gpg copy_backup_to remote:/backup/encrypted-stuff
+#
+encrypt_dir() {
+    local suffix=${1:-$BACKUP_SUFFIX}
+    local gpg_suffix=${2:-$suffix-gpg}
+    local srcdir
+    srcdir=$(backupdir "$suffix")
+    local destdir
+    destdir=$(backupdir "$gpg_suffix")
+    info "Encrypting $srcdir to $destdir"
+    if [[ "$suffix" == "$gpg_suffix" ]]; then
+        error "encrypt_dir: cannot encrypt into the same directory"
+        return
+    fi
+    if [ -z "$GPG_RECIPIENTS" ]; then
+        error "\$GPG_RECIPIENTS not specified in $configfile"
+        return
+    fi
+    local args=()
+    [ $verbose -ne 0 ] && args+=(-v)
+    [ $dry_run -ne 0 ] && args+=(-n)
+    "$libdir"/encryptdir.py -r "$GPG_RECIPIENTS" "${args[@]}" "$srcdir" "$destdir"
+}
+
 # generate_checksums [<suffix>]
 #   Generate a SHA256SUMS file in the backup directory
 #
@@ -322,7 +401,6 @@ generate_checksums() {
         && mv "$outfile.tmp" "$outfile" \
         || error "failed to generate checksums in $where"
 }
-
 
 # clean_up_old_backups <number> [<directory> [<suffix>]]
 #   Remove old backups, keep last <number>
@@ -355,7 +433,7 @@ clean_up_old_backups() {
 }
 
 # copy_backup_to [<user>@]<server>:<path> [<ssh options>]
-#   Copy today's backups to a remote server over SSH
+#   Copy today's backups to a remote server over SSH, using rsync
 #
 #   Alias for ``rsync_backup_to``.
 #

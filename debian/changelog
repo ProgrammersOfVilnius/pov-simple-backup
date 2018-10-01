@@ -5,6 +5,8 @@ pov-simple-backup (0.12) UNRELEASED; urgency=medium
   * Make pov-simple-backup -S handle back_up_dpkg_selections correctly
     (it was ignoring the size of var-lib-apt-extended_states.gz).
   * New command: generate_checksums (GH: #6).
+  * New command: encrypt_dir (GH: #5).
+  * Added python, gpg, and rsync to Recommends (partially because of #5).
 
  -- Marius Gedminas <marius@gedmin.as>  Mon, 01 Oct 2018 15:50:01 +0300
 

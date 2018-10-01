@@ -168,6 +168,63 @@ back_up_svn <pathname>
 
 
 
+encrypt_dir [<suffix> [<new-suffix>]]
+  Encrypt a backup directory using GPG
+
+  Creates a parallel backup directory with each backup file will be
+  gpg-encrypted to the recipients specified in $GPG_RECIPIENTS.
+
+  Note: root's GPG keyring should already have the public keys of the
+  specified recipients.
+
+  <suffix> defaults to $BACKUP_SUFFIX.
+
+  <new-suffix> defaults to <suffix>-gpg.
+
+  Do this after all the backup commands, and before all the rsync/scp
+  commands.
+
+
+  Example::
+
+      GPG_RECIPIENTS=root@example.com,backup@example.com
+
+      back_up ...
+      back_up ...
+
+      clean_old_backups
+
+      encrypt_dir
+      generate_checksums -gpg
+      clean_old_backups -gpg
+
+      BACKUP_SUFFIX=-gpg copy_backup_to remote:/backup/encrypted-stuff
+
+
+  Example::
+
+      GPG_RECIPIENTS=root@example.com,backup@example.com
+
+      back_up ...
+      clean_old_backups
+
+      BACKUP_SUFFIX=-git
+      back_up ...
+      clean_old_backups
+      BACKUP_SUFFIX=
+
+      encrypt_dir
+      encrypt_dir -git
+      generate_checksums -gpg
+      generate_checksums -git-gpg
+      clean_old_backups -gpg
+      clean_old_backups -git-gpg
+
+      BACKUP_SUFFIX=-gpg copy_backup_to remote:/backup/encrypted-stuff
+      BACKUP_SUFFIX=-git-gpg copy_backup_to remote:/backup/encrypted-stuff
+
+
+
 generate_checksums [<suffix>]
   Generate a SHA256SUMS file in the backup directory
 
@@ -196,7 +253,7 @@ clean_up_old_backups <number> [<directory> [<suffix>]]
 
 
 copy_backup_to [<user>@]<server>:<path> [<ssh options>]
-  Copy today's backups to a remote server over SSH
+  Copy today's backups to a remote server over SSH, using rsync
 
   Alias for ``rsync_backup_to``.
 

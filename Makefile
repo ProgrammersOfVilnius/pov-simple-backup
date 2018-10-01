@@ -71,6 +71,7 @@ install: pov-simple-backup
 	install -D -m 644 functions.sh $(DESTDIR)/usr/share/pov-simple-backup/functions.sh
 	install -D -m 644 estimate.sh $(DESTDIR)/usr/share/pov-simple-backup/estimate.sh
 	install -D -m 644 generate.sh $(DESTDIR)/usr/share/pov-simple-backup/generate.sh
+	install -D encryptdir.py $(DESTDIR)/usr/share/pov-simple-backup/encryptdir.py
 	install -D -m 644 example.conf $(DESTDIR)/usr/share/doc/pov-simple-backup/backup.example
 	install -D pov-simple-backup $(DESTDIR)/usr/sbin/pov-simple-backup
 	install -D cron_daily.sh $(DESTDIR)/etc/cron.daily/pov-simple-backup
