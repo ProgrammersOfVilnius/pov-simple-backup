@@ -69,7 +69,7 @@ def main():
                 old = f.read()
                 try:
                     new = replace_generated(old, docs)
-                except ReplaceError, e:
+                except ReplaceError as e:
                     sys.stderr.write("extract-documentation: %s: %s\n" % (filename, e))
                     sys.stderr.flush()
                     failures += 1
@@ -89,7 +89,7 @@ def main():
                 old = f.read()
                 try:
                     new = replace_generated(old, docs)
-                except ReplaceError, e:
+                except ReplaceError as e:
                     sys.stderr.write("extract-documentation: %s: %s\n" % (filename, e))
                     sys.stderr.flush()
                 else:
@@ -100,6 +100,6 @@ def main():
     else:
         print(docs)
 
+
 if __name__ == '__main__':
     main()
-
