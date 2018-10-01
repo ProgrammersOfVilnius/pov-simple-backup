@@ -1,4 +1,4 @@
-pov-simple-backup (0.12) UNRELEASED; urgency=medium
+pov-simple-backup (0.12) trusty; urgency=medium
 
   * Use /bin/bash instead of /bin/sh (GH: #7).
   * Improve failure handling and reporting (GH: #4).
@@ -8,7 +8,7 @@ pov-simple-backup (0.12) UNRELEASED; urgency=medium
   * New command: encrypt_dir (GH: #5).
   * Added python, gpg, and rsync to Recommends (partially because of #5).
 
- -- Marius Gedminas <marius@gedmin.as>  Mon, 01 Oct 2018 15:50:01 +0300
+ -- Marius Gedminas <marius@gedmin.as>  Mon, 01 Oct 2018 19:24:07 +0300
 
 pov-simple-backup (0.11) precise; urgency=medium
 
