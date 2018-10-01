@@ -28,7 +28,7 @@ error() {
 }
 
 backupdir() {
-    dir=$BACKUP_ROOT/$DATE$BACKUP_SUFFIX
+    local dir=$BACKUP_ROOT/$DATE$BACKUP_SUFFIX
     if [ $dry_run -eq 0 ] && ! [ -d "$dir" ]; then
         info "Creating $dir" 1>&3
         mkdir -p "$dir"
@@ -56,8 +56,8 @@ slugify() {
 #   must come first before the filename, and "Backing up --no-recursive" looks
 #   silly.
 backup_name() {
-    slug=$1
-    pathname=$2
+    local slug=$1
+    local pathname=$2
     case "$pathname" in
         /*) printf "%s\n" "$pathname";;
         *)  printf "%s\n" "$slug";;
@@ -65,7 +65,7 @@ backup_name() {
 }
 
 check_overwrite() {
-    filename=$1
+    local filename=$1
     if [ -e "$filename" ]; then
         if [ $overwrite -ne 0 ]; then
             info "  overwriting $filename"
@@ -100,7 +100,8 @@ check_overwrite() {
 #    Note: when using tar's ``--exclude``, be sure to omit both the leading and
 #    the trailing slash!  Otherwise it will be ignored.
 back_up() {
-    pathname=$1
+    local pathname=$1
+    local name
     name=$(slugify "$pathname")
     back_up_to "$name" "$@"
 }
@@ -124,9 +125,11 @@ back_up() {
 #    Note: you can back up multiple files/directories, but you'll have
 #    to omit leading slashes to avoid warnings from tar.
 back_up_to() {
-    name=$1
-    pathname=$2
+    local name=$1
+    local pathname=$2
+    local what
     what=$(backup_name "$name" "$pathname")
+    local outfile
     outfile=$(backupdir)/$name.tar.gz
     info "Backing up $what"
     check_overwrite "$outfile" || return
@@ -154,7 +157,8 @@ back_up_to() {
 #    Note: when using tar's ``--exclude``, be sure to omit both the leading and
 #    the trailing slash!  Otherwise it will be ignored.
 back_up_uncompressed() {
-    pathname=$1
+    local pathname=$1
+    local name
     name=$(slugify "$pathname")
     back_up_uncompressed_to "$name" "$@"
 }
@@ -178,9 +182,11 @@ back_up_uncompressed() {
 #    Note: you can back up multiple files/directories, but you'll have
 #    to omit leading slashes to avoid warnings from tar.
 back_up_uncompressed_to() {
-    name=$1
-    pathname=$2
+    local name=$1
+    local pathname=$2
+    local what
     what=$(backup_name "$name" "$pathname")
+    local outfile
     outfile=$(backupdir)/$name.tar
     info "Backing up $what"
     check_overwrite "$outfile" || return
@@ -197,6 +203,7 @@ back_up_uncompressed_to() {
 #
 #   Creates dpkg--get-selections.gz and var-lib-apt-extended_states.gz
 back_up_dpkg_selections() {
+    local outfile
     outfile=$(backupdir)/dpkg--get-selections.gz
     info "Backing up dpkg selections"
     check_overwrite "$outfile" || return
@@ -205,7 +212,7 @@ back_up_dpkg_selections() {
     dpkg --get-selections | gzip > "$outfile.tmp" \
         && mv "$outfile.tmp" "$outfile" \
         || error "failed to back up dpkg selections"
-    infile=/var/lib/apt/extended_states
+    local infile=/var/lib/apt/extended_states
     outfile=$(backupdir)/var-lib-apt-extended_states.gz
     check_overwrite "$outfile" || return
     # shellcheck disable=SC2015
@@ -224,6 +231,7 @@ back_up_dpkg_selections() {
 #   - a single dump file for all databases is unwieldy
 #   - a text dump file is inefficient
 back_up_postgresql() {
+    local outfile
     outfile=$(backupdir)/postgresql-dump.sql.gz
     info "Backing up PostgreSQL"
     check_overwrite "$outfile" || return
@@ -244,6 +252,7 @@ back_up_postgresql() {
 #   - a single dump file for all databases is unwieldy
 #   - a text dump file is inefficient
 back_up_mysql() {
+    local outfile
     outfile=$(backupdir)/mysql-dump.sql.gz
     info "Backing up MySQL"
     check_overwrite "$outfile" || return
@@ -273,8 +282,10 @@ back_up_mysql() {
 #       back_up /var/lib/svn/myrepo/hooks
 #
 back_up_svn() {
-    pathname=$1
+    local pathname=$1
+    local name
     name=$(slugify "$pathname")
+    local outfile
     outfile=$(backupdir)/$name.svndump.gz
     info "Backing up $pathname"
     check_overwrite "$outfile" || return
@@ -298,20 +309,21 @@ back_up_svn() {
 #
 #   to keep just two weeks' backups
 clean_up_old_backups() {
-    keep=$1
-    where=${2:-$BACKUP_ROOT}
-    suffix=${3:-$BACKUP_SUFFIX}
+    local keep=$1
+    local where=${2:-$BACKUP_ROOT}
+    local suffix=${3:-$BACKUP_SUFFIX}
     if [ -n "$suffix" ]; then
         info "Cleaning up old backups in $where ($suffix)"
     else
         info "Cleaning up old backups in $where"
     fi
+    local to_remove
     # shellcheck disable=SC2086,SC2012
     to_remove=$(ls -rd "${where%/}"/$DATE_GLOB"$suffix" 2>/dev/null | tail -n +$((keep+1)))
     if [ -n "$to_remove" ]; then
         echo "$to_remove" | while read -r fn; do
-          info "  cleaning up $fn"
-          [ $dry_run -eq 0 ] && rm -rf "$fn"
+            info "  cleaning up $fn"
+            [ $dry_run -eq 0 ] && rm -rf "$fn"
         done
     fi
 }
@@ -344,8 +356,8 @@ copy_backup_to() {
 #       rsync_to /var/www/uploads backups@example.com:/backup/myhostname/uploads -i key.rsa
 #
 rsync_to() {
-    what=$1
-    where=$2
+    local what=$1
+    local where=$2
     info "Copying $what to $where"
     shift 2
     [ $dry_run -ne 0 ] && return
@@ -381,7 +393,7 @@ rsync_backup_to() {
 #
 #   See also: rsync_backup_to, copy_backup_to
 scp_backup_to() {
-    where=$1
+    local where=$1
     info "Copying backup to $where"
     shift
     [ $dry_run -ne 0 ] && return

@@ -23,7 +23,7 @@ error() {
 }
 
 backupdir() {
-    dir=$BACKUP_ROOT/$DATE$BACKUP_SUFFIX
+    local dir=$BACKUP_ROOT/$DATE$BACKUP_SUFFIX
     echo "$dir"
 }
 
@@ -33,15 +33,16 @@ slugify() {
 }
 
 size_of() {
-    pathname=$1
+    local pathname=$1
     test -e "$pathname" || return
     du -s "$pathname" | awk '{print $1}'
 }
 
 size_of_last_backup() {
-    where=$1
-    suffix=$2
+    local where=$1
+    local suffix=$2
     test -d "$where" || return
+    local last_backup
     # shellcheck disable=SC2086,SC2012
     last_backup=$(ls -d "${where%/}"/$DATE_GLOB"$suffix" 2>/dev/null | tail -n 1)
     test -n "$last_backup" || return
@@ -49,7 +50,7 @@ size_of_last_backup() {
 }
 
 pretty_size() {
-    size=$1
+    local size=$1
     if [ "$size" -lt 10240 ]; then
         echo "${size}K"
         return
@@ -64,10 +65,12 @@ pretty_size() {
 }
 
 estimate() {
-    filename=$1
+    local filename=$1
     if [ $verbose -ne 0 ]; then
+        local size
         size=$(size_of "$filename")
         test -n "$size" || return
+        local pretty_size
         pretty_size=$(pretty_size "$size")
         echo "$filename is $pretty_size"
     fi
@@ -79,19 +82,23 @@ sizes_reported=0
 
 estimate_summary() {
     if [ $backup_root_included -eq 0 ]; then
+        local dir
         dir=$(backupdir)
+        local size
         size=$(size_of "$dir")
         test -n "$size" || size=$(size_of_last_backup "$BACKUP_ROOT")
         test -n "$size" || {
             error "Backup was not created yet ($dir missing)"
             exit 1
         }
+        local pretty_size
         pretty_size=$(pretty_size "$size")
         echo "$dir is $pretty_size"
         grand_total=$((grand_total + size))
         sizes_reported=$((sizes_reported + 1))
     fi
     if [ $sizes_reported -ge 2 ]; then
+        local pretty_size
         pretty_size=$(pretty_size $grand_total)
         echo "Total: $pretty_size"
     fi
@@ -102,58 +109,71 @@ estimate_summary() {
 #
 
 back_up() {
-    pathname=$1
+    local pathname=$1
+    local outfile
     outfile=$(backupdir)/$(slugify "$pathname").tar.gz
     estimate "$outfile"
 }
 
 back_up_to() {
-    name=$1
+    local name=$1
+    local outfile
     outfile=$(backupdir)/$name.tar.gz
     estimate "$outfile"
 }
 
 back_up_uncompressed() {
-    pathname=$1
+    local pathname=$1
+    local outfile
     outfile=$(backupdir)/$(slugify "$pathname").tar
     estimate "$outfile"
 }
 
 back_up_uncompressed_to() {
-    name=$1
+    local name=$1
+    local outfile
     outfile=$(backupdir)/$name.tar
     estimate "$outfile"
 }
 
 back_up_dpkg_selections() {
+    local outfile
     outfile=$(backupdir)/dpkg--get-selections.gz
     estimate "$outfile"
+    # XXX: there's another file
 }
 
 back_up_postgresql() {
+    local outfile
     outfile=$(backupdir)/postgresql-dump.sql.gz
     estimate "$outfile"
 }
 
 back_up_mysql() {
+    local outfile
     outfile=$(backupdir)/mysql-dump.sql.gz
     estimate "$outfile"
 }
 
 back_up_svn() {
-    pathname=$1
+    local pathname=$1
+    local outfile
     outfile=$(backupdir)/$(slugify "$pathname").svndump.gz
     estimate "$outfile"
 }
 
 clean_up_old_backups() {
-    keep=$1
-    where=${2:-$BACKUP_ROOT}
-    suffix=${3:-$BACKUP_SUFFIX}
+    local keep=$1
+    local where=${2:-$BACKUP_ROOT}
+    local suffix=${3:-$BACKUP_SUFFIX}
+    local size
     size=$(size_of_last_backup "$where" "$suffix")
     test -n "$size" || return
+    local pretty_size
     pretty_size=$(pretty_size "$size")
+    local total
     total=$((size * keep))
+    local pretty_total
     pretty_total=$(pretty_size $total)
     echo "$keep copies of ${where%/}/YYYY-MM-DD$suffix ($pretty_size) is $pretty_total"
     grand_total=$((grand_total + total))
