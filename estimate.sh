@@ -27,8 +27,9 @@ backupdir() {
     echo "$dir"
 }
 
+# keep this in sync with the slugify() from functions.sh
 slugify() {
-    echo "$1"|sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
+    printf "%s\n" "$1" | sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
 }
 
 size_of() {
@@ -41,6 +42,7 @@ size_of_last_backup() {
     where=$1
     suffix=$2
     test -d "$where" || return
+    # shellcheck disable=SC2086,SC2012
     last_backup=$(ls -d "${where%/}"/$DATE_GLOB"$suffix" 2>/dev/null | tail -n 1)
     test -n "$last_backup" || return
     size_of "$last_backup"

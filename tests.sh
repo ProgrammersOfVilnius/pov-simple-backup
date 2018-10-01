@@ -37,6 +37,7 @@ assertEqual() {
     n_tests=$((n_tests + 1))
 }
 
+# shellcheck source=functions.sh
 . "$(dirname "$0")"/functions.sh
 
 assertEqual slugify /etc = etc
@@ -47,6 +48,7 @@ assertEqual slugify "" = root
 assertEqual backup_name slug --option = slug
 assertEqual backup_name slug /pathname = /pathname
 
+# shellcheck source=estimate.sh
 . "$(dirname "$0")"/estimate.sh
 
 assertEqual pretty_size 0 = 0K

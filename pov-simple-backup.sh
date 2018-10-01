@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export PATH
@@ -61,6 +61,7 @@ if [ $# -ne 0 ]; then
 fi
 
 if [ $generate -ne 0 ]; then
+    # shellcheck source=generate.sh
     . "$libdir/generate.sh"
     generate
     exit 0
@@ -72,8 +73,10 @@ if ! [ -f "$configfile" ]; then
 fi
 
 if [ $estimate_size -ne 0 ]; then
+    # shellcheck source=estimate.sh
     . "$libdir/estimate.sh"
 else
+    # shellcheck source=functions.sh
     . "$libdir/functions.sh"
 fi
 
@@ -84,6 +87,7 @@ DATE=$(date +%Y-%m-%d)
 
 umask 077
 
+# shellcheck source=example.conf
 . "$configfile"
 
 if [ $estimate_size -ne 0 ]; then

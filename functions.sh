@@ -42,7 +42,7 @@ backupdir() {
 #
 #   Special-cases / as "root".
 slugify() {
-    printf "%s\n" "$1"|sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
+    printf "%s\n" "$1" | sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
 }
 
 # backup_name <slug> <maybe-pathname>
@@ -280,9 +280,10 @@ clean_up_old_backups() {
     else
         info "Cleaning up old backups in $where"
     fi
+    # shellcheck disable=SC2086,SC2012
     to_remove=$(ls -rd "${where%/}"/$DATE_GLOB"$suffix" 2>/dev/null | tail -n +$((keep+1)))
     if [ -n "$to_remove" ]; then
-        echo "$to_remove" | while read fn; do
+        echo "$to_remove" | while read -r fn; do
           info "  cleaning up $fn"
           [ $dry_run -eq 0 ] && rm -rf "$fn"
         done
