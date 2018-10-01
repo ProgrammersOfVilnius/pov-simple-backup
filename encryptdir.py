@@ -43,6 +43,8 @@ def sync(source, dest, recipients, verbose=False, dry_run=False):
     files in the destination directory if the corresponding file in the
     source directory is newer.
     """
+    if dry_run and not os.path.exists(source):
+        return
     for filename in sorted(os.listdir(source)):
         spath = os.path.join(source, filename)
         dpath = os.path.join(dest, filename) + '.gpg'
