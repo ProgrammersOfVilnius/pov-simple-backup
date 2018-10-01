@@ -140,7 +140,8 @@ back_up_dpkg_selections() {
     local outfile
     outfile=$(backupdir)/dpkg--get-selections.gz
     estimate "$outfile"
-    # XXX: there's another file
+    outfile=$(backupdir)/var-lib-apt-extended_states.gz
+    estimate "$outfile"
 }
 
 back_up_postgresql() {

@@ -2,6 +2,8 @@ pov-simple-backup (0.12) UNRELEASED; urgency=medium
 
   * Use /bin/bash instead of /bin/sh (GH: #7).
   * Improve failure handling and reporting (GH: #4).
+  * Make pov-simple-backup -S handle back_up_dpkg_selections correctly
+    (it was ignoring the size of var-lib-apt-extended_states.gz).
 
  -- Marius Gedminas <marius@gedmin.as>  Mon, 01 Oct 2018 15:50:01 +0300
 
