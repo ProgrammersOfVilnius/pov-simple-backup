@@ -5,7 +5,7 @@ A daily cron script that backs things up into ``/backup/YYYY-MM-DD/``.
 
 Quick start::
 
-    sudo add-apt-repository ppa:pov/ppa
+    sudo add-apt-repository ppa:pov
     sudo apt-get update
     sudo apt-get install pov-simple-backup
 
@@ -21,6 +21,7 @@ Example configuration file::
     back_up /var/cache/debconf/config.dat
     back_up_dpkg_selections
     back_up_postgresql
+    generate_checksums
     clean_up_old_backups 14
     copy_backup_to user@otherserver:/backup/myhostname/ -i /path/to/ssh-key.rsa
 
