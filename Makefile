@@ -120,4 +120,4 @@ pbuilder-test-build: source-package
 	# NB: you need to periodically run pbuilder-dist $(TARGET_DISTRO) update
 	pbuilder-dist $(TARGET_DISTRO) build pkgbuild/$(source)_$(version).dsc
 	@echo
-	@echo "Look for the package in ~/pbuilder/$(TARGET_DISTRO)/"
+	@echo "Look for the package in ~/pbuilder/$(TARGET_DISTRO)_result/"
