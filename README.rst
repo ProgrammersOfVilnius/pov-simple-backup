@@ -192,11 +192,11 @@ encrypt_dir [<suffix> [<new-suffix>]]
       back_up ...
       back_up ...
 
-      clean_old_backups
+      clean_up_old_backups 14
 
       encrypt_dir
       generate_checksums -gpg
-      clean_old_backups -gpg
+      clean_up_old_backups 1 $BACKUP_ROOT -gpg
 
       BACKUP_SUFFIX=-gpg copy_backup_to remote:/backup/encrypted-stuff
 
@@ -206,19 +206,19 @@ encrypt_dir [<suffix> [<new-suffix>]]
       GPG_RECIPIENTS=root@example.com,backup@example.com
 
       back_up ...
-      clean_old_backups
+      clean_up_old_backups 14
 
       BACKUP_SUFFIX=-git
       back_up ...
-      clean_old_backups
+      clean_up_old_backups 7
       BACKUP_SUFFIX=
 
       encrypt_dir
       encrypt_dir -git
       generate_checksums -gpg
       generate_checksums -git-gpg
-      clean_old_backups -gpg
-      clean_old_backups -git-gpg
+      clean_up_old_backups 1 $BACKUP_ROOT -gpg
+      clean_up_old_backups 1 $BACKUP_ROOT -git-gpg
 
       BACKUP_SUFFIX=-gpg copy_backup_to remote:/backup/encrypted-stuff
       BACKUP_SUFFIX=-git-gpg copy_backup_to remote:/backup/encrypted-stuff
