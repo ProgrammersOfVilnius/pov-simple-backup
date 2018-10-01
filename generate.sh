@@ -43,6 +43,10 @@ back_up_dpkg_selections"
 
     separator
 
+    emit "generate_checksums"
+
+    separator
+
     emit "clean_up_old_backups 14"
 
     separator

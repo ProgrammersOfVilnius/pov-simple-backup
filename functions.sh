@@ -28,7 +28,8 @@ error() {
 }
 
 backupdir() {
-    local dir=$BACKUP_ROOT/$DATE$BACKUP_SUFFIX
+    local suffix=${1:-$BACKUP_SUFFIX}
+    local dir=$BACKUP_ROOT/$DATE$suffix
     if [ $dry_run -eq 0 ] && ! [ -d "$dir" ]; then
         info "Creating $dir" 1>&3
         mkdir -p "$dir"
@@ -295,6 +296,31 @@ back_up_svn() {
         | (grep -v '^\* Dumped revision' || true) \
         && mv "$outfile.tmp" "$outfile" \
         || error "back_up_svn: failed to back up $pathname"
+}
+
+# generate_checksums [<suffix>]
+#   Generate a SHA256SUMS file in the backup directory
+#
+#   Do this after all the backup commands, and before all the rsync/scp
+#   commands.
+#
+#   Example::
+#
+#       generate_checksums
+#       generate_checksums -git
+#
+generate_checksums() {
+    local suffix=${1:-$BACKUP_SUFFIX}
+    local where
+    where=$(backupdir "$suffix")
+    info "Generating checkums in $where"
+    local outfile=$where/SHA256SUMS
+    check_overwrite "$outfile" || return
+    [ $dry_run -ne 0 ] && return
+    # shellcheck disable=SC2015
+    (cd "$where" && sha256sum -b ./* > "$outfile.tmp") \
+        && mv "$outfile.tmp" "$outfile" \
+        || error "failed to generate checksums in $where"
 }
 
 

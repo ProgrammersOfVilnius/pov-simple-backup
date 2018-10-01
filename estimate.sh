@@ -23,7 +23,8 @@ error() {
 }
 
 backupdir() {
-    local dir=$BACKUP_ROOT/$DATE$BACKUP_SUFFIX
+    local suffix=${1:-$BACKUP_SUFFIX}
+    local dir=$BACKUP_ROOT/$DATE$suffix
     echo "$dir"
 }
 
@@ -160,6 +161,13 @@ back_up_svn() {
     local pathname=$1
     local outfile
     outfile=$(backupdir)/$(slugify "$pathname").svndump.gz
+    estimate "$outfile"
+}
+
+generate_checksums() {
+    local suffix=${1:-$BACKUP_SUFFIX}
+    local outfile
+    outfile=$(backupdir "$suffix")/SHA256SUMS
     estimate "$outfile"
 }
 

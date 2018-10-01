@@ -233,6 +233,20 @@ back_up_svn <pathname>
 
 
 
+generate_checksums [<suffix>]
+  Generate a SHA256SUMS file in the backup directory
+
+  Do this after all the backup commands, and before all the rsync/scp
+  commands.
+
+
+  Example::
+
+      generate_checksums
+      generate_checksums -git
+
+
+
 clean_up_old_backups <number> [<directory> [<suffix>]]
   Remove old backups, keep last <number>
 
