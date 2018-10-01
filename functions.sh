@@ -394,6 +394,7 @@ generate_checksums() {
     where=$(backupdir "$suffix")
     info "Generating checkums in $where"
     local outfile=$where/SHA256SUMS
+    # XXX: maybe it should always overwrite?
     check_overwrite "$outfile" || return
     [ $dry_run -ne 0 ] && return
     # shellcheck disable=SC2015
