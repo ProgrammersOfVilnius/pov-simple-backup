@@ -100,10 +100,10 @@ check_overwrite() {
 #       back_up /var/cache/debconf/config.dat
 #       back_up /opt/myapp --exclude opt/myapp/var/zdaemonsock
 #
-#    would create var-cache-debconf-config.dat.tar.gz and opt-myapp.tar.gz
+#   would create var-cache-debconf-config.dat.tar.gz and opt-myapp.tar.gz
 #
-#    Note: when using tar's ``--exclude``, be sure to omit both the leading and
-#    the trailing slash!  Otherwise it will be ignored.
+#   Note: when using tar's ``--exclude``, be sure to omit both the leading and
+#   the trailing slash!  Otherwise it will be ignored.
 back_up() {
     local pathname=$1
     local name
@@ -120,15 +120,15 @@ back_up() {
 #
 #       back_up_to backup-skeleton --no-recursive backups/host1 backups/host2
 #
-#    Note: when using tar's ``--no-recursive``, be sure to specify it *before*
-#    the directory you don't want to recurse into.  Otherwise it may be
-#    ignored, depending on the version of tar.
+#   Note: when using tar's ``--no-recursive``, be sure to specify it *before*
+#   the directory you don't want to recurse into.  Otherwise it may be
+#   ignored, depending on the version of tar.
 #
-#    Note: when using tar's ``--exclude``, be sure to omit both the leading and
-#    the trailing slash!  Otherwise it will be ignored.
+#   Note: when using tar's ``--exclude``, be sure to omit both the leading and
+#   the trailing slash!  Otherwise it will be ignored.
 #
-#    Note: you can back up multiple files/directories, but you'll have
-#    to omit leading slashes to avoid warnings from tar.
+#   Note: you can back up multiple files/directories, but you'll have
+#   to omit leading slashes to avoid warnings from tar.
 back_up_to() {
     local name=$1
     local pathname=$2
@@ -157,10 +157,10 @@ back_up_to() {
 #
 #       back_up_uncompressed /git/myrepo.git
 #
-#    would create git-myrepo.git.tar
+#   would create git-myrepo.git.tar
 #
-#    Note: when using tar's ``--exclude``, be sure to omit both the leading and
-#    the trailing slash!  Otherwise it will be ignored.
+#   Note: when using tar's ``--exclude``, be sure to omit both the leading and
+#   the trailing slash!  Otherwise it will be ignored.
 back_up_uncompressed() {
     local pathname=$1
     local name
@@ -177,15 +177,15 @@ back_up_uncompressed() {
 #
 #       back_up_uncompressed_to backup-skeleton --no-recursive /backups/host1 backups/host2
 #
-#    Note: when using tar's ``--no-recursive``, be sure to specify it *before*
-#    the directory you don't want to recurse into.  Otherwise it may be
-#    ignored, depending on the version of tar.
+#   Note: when using tar's ``--no-recursive``, be sure to specify it *before*
+#   the directory you don't want to recurse into.  Otherwise it may be
+#   ignored, depending on the version of tar.
 #
-#    Note: when using tar's ``--exclude``, be sure to omit both the leading and
-#    the trailing slash!  Otherwise it will be ignored.
+#   Note: when using tar's ``--exclude``, be sure to omit both the leading and
+#   the trailing slash!  Otherwise it will be ignored.
 #
-#    Note: you can back up multiple files/directories, but you'll have
-#    to omit leading slashes to avoid warnings from tar.
+#   Note: you can back up multiple files/directories, but you'll have
+#   to omit leading slashes to avoid warnings from tar.
 back_up_uncompressed_to() {
     local name=$1
     local pathname=$2
