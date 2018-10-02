@@ -392,7 +392,7 @@ generate_checksums() {
     local suffix=${1:-$BACKUP_SUFFIX}
     local where
     where=$(backupdir "$suffix")
-    info "Generating checkums in $where"
+    info "Generating checksums in $where"
     local outfile=$where/SHA256SUMS
     # XXX: maybe it should always overwrite?
     check_overwrite "$outfile" || return
