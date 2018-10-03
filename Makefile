@@ -53,9 +53,13 @@ update-version:
 check-target:
 	@test "$(target_distribution)" = "$(TARGET_DISTRO)" || { \
 	    echo "Distribution in debian/changelog should be '$(TARGET_DISTRO)'" 2>&1; \
-	    echo 'Run dch -r -D $(TARGET_DISTRO) ""' 2>&1; \
+	    echo "Run make update-target" 2>&1; \
 	    exit 1; \
 	}
+
+.PHONY: update-target
+update-target:
+	dch -r -D $(TARGET_DISTRO) ""
 
 .PHONY: check-docs
 check-docs:

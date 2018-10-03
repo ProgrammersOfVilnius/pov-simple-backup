@@ -7,8 +7,8 @@ create non-incremental nightly backups
 --------------------------------------
 
 :Author: Marius Gedminas <marius@gedmin.as>
-:Date: 2018-10-01
-:Version: 0.12
+:Date: 2018-10-03
+:Version: 0.12.1
 :Manual section: 8
 
 
