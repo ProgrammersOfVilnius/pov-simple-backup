@@ -27,7 +27,7 @@ assertEqual() {
         warn "  assertEqual fn arg = value"
         warn "  assertEqual fn arg1 arg2 = value"
         warn "got"
-        warn "  assertEqual $fn $@"
+        warn "  assertEqual $fn $*"
         exit 1
     fi
     if ! [ x"$actual" = x"$expected" ]; then

@@ -28,8 +28,12 @@ all: pov-simple-backup pov-simple-backup.8
 	rst2man $< > $@
 
 .PHONY: test check
-test check: check-version check-docs
+test check: check-version check-docs shellcheck
 	./tests.sh
+
+.PHONY: shellcheck
+shellcheck:
+	shellcheck -x -s bash *.sh
 
 .PHONY: checkversion
 check-version:

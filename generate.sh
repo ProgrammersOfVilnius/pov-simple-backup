@@ -9,7 +9,7 @@ emit() {
         printf "%s" "$pending"
         pending=""
     fi
-    printf "%s\n" "$*"
+    printf '%s\n' "$*"
 }
 
 prefix() {

@@ -30,7 +30,7 @@ backupdir() {
 
 # keep this in sync with the slugify() from functions.sh
 slugify() {
-    printf "%s\n" "$1" | sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
+    printf '%s\n' "$1" | sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
 }
 
 size_of() {

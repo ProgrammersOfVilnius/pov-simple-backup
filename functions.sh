@@ -49,7 +49,7 @@ backupdir() {
 #
 #   Special-cases / as "root".
 slugify() {
-    printf "%s\n" "$1" | sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
+    printf '%s\n' "$1" | sed -e 's,^/\+,,' -e 's,/\+$,,' -e 's,/\+,-,g' -e 's,^$,root,'
 }
 
 # backup_name <slug> <maybe-pathname>
@@ -64,8 +64,8 @@ backup_name() {
     local slug=$1
     local pathname=$2
     case "$pathname" in
-        /*) printf "%s\n" "$pathname";;
-        *)  printf "%s\n" "$slug";;
+        /*) printf '%s\n' "$pathname";;
+        *)  printf '%s\n' "$slug";;
     esac
 }
 
