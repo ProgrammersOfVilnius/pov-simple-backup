@@ -6,11 +6,11 @@ target_distribution := $(shell dpkg-parsechangelog | awk '$$1 == "Distribution:"
 manpage = pov-simple-backup.rst
 #
 # change this to the lowest supported Ubuntu LTS
-TARGET_DISTRO := trusty
+TARGET_DISTRO := xenial
 
 # for testing in vagrant:
 #   mkdir -p ~/tmp/vagrantbox && cd ~/tmp/vagrantbox
-#   vagrant init ubuntu/trusty64
+#   vagrant init ubuntu/xenial64
 #   vagrant ssh-config --host vagrantbox >> ~/.ssh/config
 # now you can 'make vagrant-test-install', then 'ssh vagrantbox' and play
 # with the package
@@ -33,7 +33,12 @@ test check: check-version check-docs shellcheck
 
 .PHONY: shellcheck
 shellcheck:
-	shellcheck -x -s bash *.sh
+	case $$(shellcheck -V) in \
+	    *"version: 0.3.7"*) \
+	        echo "Your shellcheck is too old, skipping tests" 2>&1 ;; \
+	    *) \
+	        shellcheck -s bash *.sh example.conf ;; \
+	esac
 
 .PHONY: checkversion
 check-version:

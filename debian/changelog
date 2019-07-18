@@ -1,3 +1,13 @@
+pov-simple-backup (0.13.1) xenial; urgency=medium
+
+  * Fix FBTS: add shellcheck to build-depends.
+  * Target xenial instead of trusty, which is EOL.
+  * Bump debhelper compat level to 9.
+  * Skip shellcheck tests on xenial where shellcheck is too old to understand
+    source directives.
+
+ -- Marius Gedminas <marius@gedmin.as>  Thu, 18 Jul 2019 16:26:01 +0300
+
 pov-simple-backup (0.13.0) trusty; urgency=medium
 
   * 'back_up' and related commands now pass the pathname to the end of the tar
