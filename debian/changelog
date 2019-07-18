@@ -1,3 +1,11 @@
+pov-simple-backup (0.13.0) UNRELEASED; urgency=medium
+
+  * 'back_up' and related commands now pass the pathname to the end of the tar
+    command line, to avoid problems from tar ignoring --exclude when it comes
+    after pathnames.
+
+ -- Marius Gedminas <marius@gedmin.as>  Thu, 18 Jul 2019 10:17:44 +0300
+
 pov-simple-backup (0.12.1) trusty; urgency=medium
 
   * Typo and documentation formatting fixes.

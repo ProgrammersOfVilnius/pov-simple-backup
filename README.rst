@@ -62,17 +62,20 @@ back_up <pathname> [<tar options>]
   Note: when using tar's ``--exclude``, be sure to omit both the leading and
   the trailing slash!  Otherwise it will be ignored.
 
+  Note: <pathname> will be passed as the last argument to tar (otherwise
+  --exclude would have no effect!).
 
-back_up_to <name> <pathname> [<tar options>]
+
+back_up_to <name> [<pathname>] [<tar options>]
   Back up a directory or a file.
 
   Creates <name>.tar.gz.
 
   Examples::
 
-      back_up_to backup-skeleton --no-recursive backups/host1 backups/host2
+      back_up_to backup-skeleton --no-recursion backups/host1 backups/host2
 
-  Note: when using tar's ``--no-recursive``, be sure to specify it *before*
+  Note: when using tar's ``--no-recursion``, be sure to specify it *before*
   the directory you don't want to recurse into.  Otherwise it may be
   ignored, depending on the version of tar.
 
@@ -81,6 +84,14 @@ back_up_to <name> <pathname> [<tar options>]
 
   Note: you can back up multiple files/directories, but you'll have
   to omit leading slashes to avoid warnings from tar.
+
+  Note: <pathname> is considered to be present when it starts with a /
+
+  Note: <pathname> will be passed as the last argument to tar (otherwise
+  --exclude would have no effect!).  The leading slash will be automatically
+  stripped from it.
+
+  Note: <pathname> must not have spaces in it, for silly reasons.
 
 
 back_up_uncompressed <pathname> [<tar options>]
@@ -100,16 +111,16 @@ back_up_uncompressed <pathname> [<tar options>]
   the trailing slash!  Otherwise it will be ignored.
 
 
-back_up_uncompressed_to <name> <pathname> [<tar options>]
+back_up_uncompressed_to <name> [<pathname>] [<tar options>]
   Back up a directory or a file.
 
   Creates <name>.tar.
 
   Examples::
 
-      back_up_uncompressed_to backup-skeleton --no-recursive /backups/host1 backups/host2
+      back_up_uncompressed_to backup-skeleton --no-recursion /backups/host1 backups/host2
 
-  Note: when using tar's ``--no-recursive``, be sure to specify it *before*
+  Note: when using tar's ``--no-recursion``, be sure to specify it *before*
   the directory you don't want to recurse into.  Otherwise it may be
   ignored, depending on the version of tar.
 
@@ -118,6 +129,14 @@ back_up_uncompressed_to <name> <pathname> [<tar options>]
 
   Note: you can back up multiple files/directories, but you'll have
   to omit leading slashes to avoid warnings from tar.
+
+  Note: <pathname> is considered to be present when it starts with a /
+
+  Note: <pathname> will be passed as the last argument to tar (otherwise
+  --exclude would have no effect!).  The leading slash will be automatically
+  stripped from it.
+
+  Note: <pathname> must not have spaces in it, for silly reasons.
 
 
 back_up_dpkg_selections

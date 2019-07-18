@@ -58,7 +58,7 @@ slugify() {
 #   Internal helper for back_up_to
 #
 #   Usually we want to say "Backing up /folder", but sometimes a tar option
-#   must come first before the filename, and "Backing up --no-recursive" looks
+#   must come first before the filename, and "Backing up --no-recursion" looks
 #   silly.
 backup_name() {
     local slug=$1
@@ -104,6 +104,9 @@ check_overwrite() {
 #
 #   Note: when using tar's ``--exclude``, be sure to omit both the leading and
 #   the trailing slash!  Otherwise it will be ignored.
+#
+#   Note: <pathname> will be passed as the last argument to tar (otherwise
+#   --exclude would have no effect!).
 back_up() {
     local pathname=$1
     local name
@@ -111,16 +114,16 @@ back_up() {
     back_up_to "$name" "$@"
 }
 
-# back_up_to <name> <pathname> [<tar options>]
+# back_up_to <name> [<pathname>] [<tar options>]
 #   Back up a directory or a file.
 #
 #   Creates <name>.tar.gz.
 #
 #   Examples::
 #
-#       back_up_to backup-skeleton --no-recursive backups/host1 backups/host2
+#       back_up_to backup-skeleton --no-recursion backups/host1 backups/host2
 #
-#   Note: when using tar's ``--no-recursive``, be sure to specify it *before*
+#   Note: when using tar's ``--no-recursion``, be sure to specify it *before*
 #   the directory you don't want to recurse into.  Otherwise it may be
 #   ignored, depending on the version of tar.
 #
@@ -129,6 +132,14 @@ back_up() {
 #
 #   Note: you can back up multiple files/directories, but you'll have
 #   to omit leading slashes to avoid warnings from tar.
+#
+#   Note: <pathname> is considered to be present when it starts with a /
+#
+#   Note: <pathname> will be passed as the last argument to tar (otherwise
+#   --exclude would have no effect!).  The leading slash will be automatically
+#   stripped from it.
+#
+#   Note: <pathname> must not have spaces in it, for silly reasons.
 back_up_to() {
     local name=$1
     local pathname=$2
@@ -138,10 +149,13 @@ back_up_to() {
     outfile=$(backupdir)/$name.tar.gz
     info "Backing up $what"
     check_overwrite "$outfile" || return
-    shift 2
+    case "$pathname" in
+        /*)  shift 2;;
+        *)   pathname="--"; shift;;
+    esac
     [ $dry_run -ne 0 ] && return
     # shellcheck disable=SC2015
-    tar -czf "$outfile.tmp" "${pathname#/}" "$@" \
+    tar -czf "$outfile.tmp" "$@" "${pathname#/}" \
         && mv "$outfile.tmp" "$outfile" \
         || error "failed to back up $what"
 }
@@ -168,16 +182,16 @@ back_up_uncompressed() {
     back_up_uncompressed_to "$name" "$@"
 }
 
-# back_up_uncompressed_to <name> <pathname> [<tar options>]
+# back_up_uncompressed_to <name> [<pathname>] [<tar options>]
 #   Back up a directory or a file.
 #
 #   Creates <name>.tar.
 #
 #   Examples::
 #
-#       back_up_uncompressed_to backup-skeleton --no-recursive /backups/host1 backups/host2
+#       back_up_uncompressed_to backup-skeleton --no-recursion /backups/host1 backups/host2
 #
-#   Note: when using tar's ``--no-recursive``, be sure to specify it *before*
+#   Note: when using tar's ``--no-recursion``, be sure to specify it *before*
 #   the directory you don't want to recurse into.  Otherwise it may be
 #   ignored, depending on the version of tar.
 #
@@ -186,6 +200,14 @@ back_up_uncompressed() {
 #
 #   Note: you can back up multiple files/directories, but you'll have
 #   to omit leading slashes to avoid warnings from tar.
+#
+#   Note: <pathname> is considered to be present when it starts with a /
+#
+#   Note: <pathname> will be passed as the last argument to tar (otherwise
+#   --exclude would have no effect!).  The leading slash will be automatically
+#   stripped from it.
+#
+#   Note: <pathname> must not have spaces in it, for silly reasons.
 back_up_uncompressed_to() {
     local name=$1
     local pathname=$2
@@ -195,10 +217,13 @@ back_up_uncompressed_to() {
     outfile=$(backupdir)/$name.tar
     info "Backing up $what"
     check_overwrite "$outfile" || return
-    shift 2
+    case "$pathname" in
+        /*)  shift 2;;
+        *)   pathname="--"; shift;;
+    esac
     [ $dry_run -ne 0 ] && return
     # shellcheck disable=SC2015
-    tar -czf "$outfile.tmp" "${pathname#/}" "$@" \
+    tar -czf "$outfile.tmp" "$@" "${pathname#/}" \
         && mv "$outfile.tmp" "$outfile" \
         || error "failed to back up $what"
 }
