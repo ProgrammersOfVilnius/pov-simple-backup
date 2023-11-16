@@ -110,7 +110,7 @@ source-package: clean-build-tree
 
 .PHONY: upload-to-ppa release
 release upload-to-ppa: check-target check source-package
-	dput ppa:pov/ppa pkgbuild/$(source)_$(version)_source.changes
+	dput ssh-ppa:pov/ppa pkgbuild/$(source)_$(version)_source.changes
 	git tag $(version)
 	git push
 	git push --tags
