@@ -2,14 +2,14 @@ Source: pov-simple-backup
 Section: admin
 Priority: extra
 Maintainer: Marius Gedminas <marius@pov.lt>
-Build-Depends: debhelper (>= 9~), python-docutils, shellcheck
+Build-Depends: debhelper (>= 9~), python3-docutils, shellcheck
 Standards-Version: 3.9.4
 Homepage: https://github.com/ProgrammersOfVilnius/pov-simple-backup
 
 Package: pov-simple-backup
 Architecture: all
 Depends: ${misc:Depends}
-Recommends: python, gpg, rsync
+Recommends: python3, gpg, rsync
 Description: simple nightly backup script
  * This is an unofficial package.
  .

@@ -4,9 +4,9 @@ date := $(shell dpkg-parsechangelog | grep ^Date: | cut -d: -f 2- | date --date=
 target_distribution := $(shell dpkg-parsechangelog | awk '$$1 == "Distribution:" { print $$2 }')
 
 manpage = pov-simple-backup.rst
-#
+
 # change this to the lowest supported Ubuntu LTS
-TARGET_DISTRO := xenial
+TARGET_DISTRO := focal
 
 # for testing in vagrant:
 #   mkdir -p ~/tmp/vagrantbox && cd ~/tmp/vagrantbox

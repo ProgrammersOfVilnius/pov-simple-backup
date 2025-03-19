@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 """Create an encrypted copy of a directory.
 
 Usage:
@@ -14,7 +14,7 @@ import sys
 
 
 __author__ = 'Marius Gedminas <marius@pov.lt>'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 
 def encrypt(filename, outfilename, recipients):
